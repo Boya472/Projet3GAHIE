@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Statistiques - Vendeur - AfriBoyStyle{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2"><i class="fa fa-chart-line"></i> Mes Statistiques</h1>
+        <a href="{% url 'dashboard_vendeur' %}" class="btn btn-outline-secondary">
+            <i class="fa fa-arrow-left"></i> Retour au Dashboard
+        </a>
+    </div>
+
+    <!-- Statistiques Générales -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card bg-primary text-white h-100">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2">Total Produits</h6>
+                    <h2 class="card-title mb-0">{{ total_produits }}</h2>
+                    <small>Dont {{ produits_publies }} publiés</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-success text-white h-100">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2">Total Ventes</h6>
+                    <h2 class="card-title mb-0">{{ total_ventes }}</h2>
+                    <small>Articles vendus</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-warning text-white h-100">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2">Revenu Brut</h6>
+                    <h2 class="card-title mb-0">{{ revenu_brut|floatformat:0 }}</h2>
+                    <small>FCFA</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-info text-white h-100">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2">Votre Gain Net</h6>
+                    <h2 class="card-title mb-0">{{ revenu_net|floatformat:0 }}</h2>
+                    <small>FCFA (après commission)</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Détails Commission -->
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0"><i class="fa fa-percentage"></i> Détails des Revenus</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <h6>Revenu Brut</h6>
+                    <p class="h4 text-warning">{{ revenu_brut|floatformat:0 }} FCFA</p>
+                    <small class="text-muted">Total des ventes</small>
+                </div>
+                <div class="col-md-4">
+                    <h6>Commission Plateforme ({{ user.vendeur_profile.commission_taux }}%)</h6>
+                    <p class="h4 text-danger">- {{ commission_plateforme|floatformat:0 }} FCFA</p>
+                    <small class="text-muted">Frais de service</small>
+                </div>
+                <div class="col-md-4">
+                    <h6>Revenu Net</h6>
+                    <p class="h4 text-success">{{ revenu_net|floatformat:0 }} FCFA</p>
+                    <small class="text-muted">Votre gain</small>
+                </div>
+            </div>
+            
+            <hr>
+            
+            <div class="progress" style="height: 30px;">
+                <div class="progress-bar bg-success" style="width: 90%">
+                    Votre part : 90%
+                </div>
+                <div class="progress-bar bg-danger" style="width: 10%">
+                    Commission : 10%
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Produits les Plus Vendus -->
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0"><i class="fa fa-fire"></i> Produits les Plus Vendus</h5>
+        </div>
+        <div class="card-body">
+            {% if produits_populaires %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Produit</th>
+                            <th>Prix</th>
+                            <th>Ventes</th>
+                            <th>Revenu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for produit in produits_populaires %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ produit.image_principale.url }}" class="img-thumbnail me-2" style="width: 50px; height: 50px; object-fit: cover;" alt="{{ produit.nom }}">
+                                    <div>
+                                        <strong>{{ produit.nom|truncatewords:5 }}</strong>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ produit.prix }} FCFA</td>
+                            <td><span class="badge bg-success">{{ produit.nb_ventes }}</span></td>
+                            <td><strong>{% widthratio produit.prix produit.nb_ventes 1 %} FCFA</strong></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-muted text-center py-4">Aucune vente pour le moment</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Produits les Plus Vus -->
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0"><i class="fa fa-eye"></i> Produits les Plus Vus</h5>
+        </div>
+        <div class="card-body">
+            {% if produits_vus %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Produit</th>
+                            <th>Prix</th>
+                            <th>Stock</th>
+                            <th>Vues</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for produit in produits_vus %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ produit.image_principale.url }}" class="img-thumbnail me-2" style="width: 50px; height: 50px; object-fit: cover;" alt="{{ produit.nom }}">
+                                    <div>
+                                        <strong>{{ produit.nom|truncatewords:5 }}</strong>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ produit.prix }} FCFA</td>
+                            <td>
+                                {% if produit.stock > 0 %}
+                                    <span class="badge bg-success">{{ produit.stock }}</span>
+                                {% else %}
+                                    <span class="badge bg-danger">0</span>
+                                {% endif %}
+                            </td>
+                            <td><strong>{{ produit.vues }}</strong></td>
+                            <td>
+                                {% if produit.statut == 'publie' %}
+                                    <span class="badge bg-success">Publié</span>
+                                {% else %}
+                                    <span class="badge bg-warning text-dark">{{ produit.get_statut_display }}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-muted text-center py-4">Aucun produit pour le moment</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Conseils -->
+    <div class="alert alert-info">
+        <h6><i class="fa fa-lightbulb"></i> Conseils pour augmenter vos ventes :</h6>
+        <ul class="mb-0">
+            <li>Ajoutez des photos de qualité professionnelle</li>
+            <li>Rédigez des descriptions détaillées et attrayantes</li>
+            <li>Proposez plusieurs tailles et options</li>
+            <li>Répondez rapidement aux questions des clients</li>
+            <li>Mettez à jour régulièrement votre stock</li>
+            <li>Proposez des promotions saisonnières</li>
+        </ul>
+    </div>
+</div>
+
+{% endblock %}

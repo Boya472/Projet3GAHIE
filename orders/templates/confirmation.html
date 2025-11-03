@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Commande Confirmée - AfriBoyStyle{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Message de Succès -->
+            <div class="text-center mb-5">
+                <i class="fa fa-check-circle fa-5x text-success mb-3"></i>
+                <h1 class="h2">Commande Confirmée !</h1>
+                <p class="lead text-muted">Merci pour votre achat chez AfriBoyStyle</p>
+            </div>
+
+            <!-- Informations Commande -->
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fa fa-receipt"></i> Détails de la commande</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Numéro de commande:</strong><br>
+                            <span class="text-primary">{{ commande.numero_commande }}</span>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <strong>Date:</strong><br>
+                            {{ commande.date_commande|date:"d/m/Y à H:i" }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Statut:</strong><br>
+                            <span class="badge bg-info">{{ commande.get_statut_display }}</span>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <strong>Mode de paiement:</strong><br>
+                            {{ commande.get_mode_paiement_display }}
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><i class="fa fa-map-marker-alt"></i> Adresse de livraison</h6>
+                            <p class="mb-0">
+                                {{ commande.adresse_livraison }}<br>
+                                {{ commande.ville }}
+                                {% if commande.code_postal %}, {{ commande.code_postal }}{% endif %}<br>
+                                <i class="fa fa-phone"></i> {{ commande.telephone_livraison }}
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><i class="fa fa-box"></i> Articles commandés</h6>
+                            <ul class="list-unstyled mb-0">
+                                {% for ligne in commande.lignes.all %}
+                                <li class="mb-1">
+                                    {{ ligne.produit.nom }} x{{ ligne.quantite }}
+                                    {% if ligne.taille %}- Taille {{ ligne.taille }}{% endif %}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Résumé Financier -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Résumé financier</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li class="d-flex justify-content-between py-2 border-bottom">
+                            <span>Sous-total produits</span>
+                            <strong>{{ commande.montant_produits }} FCFA</strong>
+                        </li>
+                        <li class="d-flex justify-content-between py-2 border-bottom">
+                            <span>Frais de livraison</span>
+                            <strong>{{ commande.frais_livraison }} FCFA</strong>
+                        </li>
+                        <li class="d-flex justify-content-between py-3">
+                            <span class="h5 mb-0">Total payé</span>
+                            <strong class="h5 mb-0 text-success">{{ commande.montant_total }} FCFA</strong>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Prochaines Étapes -->
+            <div class="alert alert-info">
+                <h6><i class="fa fa-info-circle"></i> Prochaines étapes</h6>
+                <ul class="mb-0">
+                    <li>Vous recevrez un email de confirmation à l'adresse : <strong>{{ user.email }}</strong></li>
+                    <li>Le(s) vendeur(s) prépareront votre commande</li>
+                    <li>Vous serez notifié lors de l'expédition et de la livraison</li>
+                    <li>Vous pourrez suivre votre commande depuis votre espace client</li>
+                </ul>
+            </div>
+
+            <!-- Actions -->
+            <div class="text-center mt-4">
+                <a href="{% url 'mes_commandes' %}" class="btn btn-primary btn-lg me-2">
+                    <i class="fa fa-list"></i> Voir mes commandes
+                </a>
+                <a href="{% url 'catalogue' %}" class="btn btn-outline-secondary btn-lg">
+                    <i class="fa fa-shopping-bag"></i> Continuer mes achats
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

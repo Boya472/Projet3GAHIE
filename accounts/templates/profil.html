@@ -1,0 +1,254 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mon Profil - AfriBoyStyle{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <h1 class="mb-4"><i class="fa fa-user-circle"></i> Mon Profil</h1>
+
+    <div class="row">
+        <!-- Informations Personnelles -->
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    {% if user.avatar %}
+                        <img src="{{ user.avatar.url }}" class="rounded-circle mb-3" style="width: 120px; height: 120px; object-fit: cover;" alt="{{ user.username }}">
+                    {% else %}
+                        <div class="rounded-circle bg-success text-white d-inline-flex align-items-center justify-content-center mb-3" style="width: 120px; height: 120px; font-size: 3rem;">
+                            {{ user.first_name.0|default:user.username.0|upper }}
+                        </div>
+                    {% endif %}
+                    
+                    <h4 class="mb-1">{{ user.get_full_name|default:user.username }}</h4>
+                    <p class="text-muted mb-3">
+                        {% if user.role == 'client' %}
+                            <i class="fa fa-user"></i> Client
+                        {% elif user.role == 'vendeur' %}
+                            <i class="fa fa-store"></i> Vendeur
+                        {% elif user.role == 'admin' %}
+                            <i class="fa fa-crown"></i> Administrateur
+                        {% endif %}
+                    </p>
+                    
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'modifier_profil' %}" class="btn btn-primary">
+                            <i class="fa fa-edit"></i> Modifier mon profil
+                        </a>
+                        <a href="{% url 'deconnexion' %}" class="btn btn-outline-danger">
+                            <i class="fa fa-sign-out-alt"></i> Se déconnecter
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistiques rapides pour client -->
+            {% if user.role == 'client' %}
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h6 class="card-title">Mes Statistiques</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li class="d-flex justify-content-between py-2 border-bottom">
+                            <span><i class="fa fa-shopping-bag"></i> Commandes</span>
+                            <strong>{{ commandes.count }}</strong>
+                        </li>
+                        <li class="d-flex justify-content-between py-2 border-bottom">
+                            <span><i class="fa fa-heart"></i> Favoris</span>
+                            <strong>{{ user.client_profile.favoris.count }}</strong>
+                        </li>
+                        <li class="d-flex justify-content-between py-2">
+                            <span><i class="fa fa-star"></i> Avis laissés</span>
+                            <strong>{{ user.client_profile.avis.count }}</strong>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Détails du Profil -->
+        <div class="col-lg-8">
+            <!-- Informations Personnelles -->
+            <div class="card mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fa fa-info-circle"></i> Informations Personnelles</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Nom d'utilisateur :</strong>
+                            <p class="text-muted">{{ user.username }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Email :</strong>
+                            <p class="text-muted">{{ user.email }}</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Prénom :</strong>
+                            <p class="text-muted">{{ user.first_name|default:"Non renseigné" }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Nom :</strong>
+                            <p class="text-muted">{{ user.last_name|default:"Non renseigné" }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong>Téléphone :</strong>
+                            <p class="text-muted">{{ user.telephone|default:"Non renseigné" }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Membre depuis :</strong>
+                            <p class="text-muted">{{ user.date_inscription|date:"d/m/Y" }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Informations Vendeur -->
+            {% if user.role == 'vendeur' %}
+            <div class="card mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fa fa-store"></i> Ma Boutique</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Nom de la boutique :</strong>
+                            <p class="text-muted">{{ user.vendeur_profile.nom_boutique }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Statut :</strong>
+                            <p>
+                                {% if user.vendeur_profile.statut_validation %}
+                                    <span class="badge bg-success">Validé</span>
+                                {% else %}
+                                    <span class="badge bg-warning text-dark">En attente</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <strong>Description :</strong>
+                            <p class="text-muted">{{ user.vendeur_profile.description_boutique|default:"Non renseignée" }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong>Total produits :</strong>
+                            <p class="text-muted">{{ user.vendeur_profile.total_produits }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Commission :</strong>
+                            <p class="text-muted">{{ user.vendeur_profile.commission_taux }}%</p>
+                        </div>
+                    </div>
+                    <a href="{% url 'dashboard_vendeur' %}" class="btn btn-primary">
+                        <i class="fa fa-tachometer-alt"></i> Accéder au Dashboard
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Dernières Commandes (Client) -->
+            {% if user.role == 'client' and commandes %}
+            <div class="card mb-4">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fa fa-shopping-bag"></i> Mes Dernières Commandes</h5>
+                    <a href="{% url 'mes_commandes' %}" class="btn btn-sm btn-primary">Voir toutes</a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Numéro</th>
+                                    <th>Date</th>
+                                    <th>Montant</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for commande in commandes|slice:":5" %}
+                                <tr>
+                                    <td><strong>#{{ commande.numero_commande }}</strong></td>
+                                    <td>{{ commande.date_commande|date:"d/m/Y" }}</td>
+                                    <td>{{ commande.montant_total }} FCFA</td>
+                                    <td>
+                                        {% if commande.statut == 'livree' %}
+                                            <span class="badge bg-success">Livrée</span>
+                                        {% elif commande.statut == 'expediee' %}
+                                            <span class="badge bg-secondary">Expédiée</span>
+                                        {% elif commande.statut == 'en_preparation' %}
+                                            <span class="badge bg-primary">En préparation</span>
+                                        {% else %}
+                                            <span class="badge bg-warning text-dark">{{ commande.get_statut_display }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'detail_commande' commande.id %}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Actions rapides -->
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fa fa-bolt"></i> Actions Rapides</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% if user.role == 'client' %}
+                        <div class="col-md-4 mb-2">
+                            <a href="{% url 'catalogue' %}" class="btn btn-outline-primary w-100">
+                                <i class="fa fa-shopping-cart"></i> Continuer mes achats
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <a href="{% url 'mes_commandes' %}" class="btn btn-outline-info w-100">
+                                <i class="fa fa-list"></i> Mes commandes
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <a href="{% url 'mes_avis' %}" class="btn btn-outline-secondary w-100">
+                                <i class="fa fa-star"></i> Mes avis
+                            </a>
+                        </div>
+                        {% elif user.role == 'vendeur' %}
+                        <div class="col-md-4 mb-2">
+                            <a href="{% url 'dashboard_vendeur' %}" class="btn btn-outline-primary w-100">
+                                <i class="fa fa-tachometer-alt"></i> Dashboard
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <a href="{% url 'liste_produits_vendeur' %}" class="btn btn-outline-info w-100">
+                                <i class="fa fa-box"></i> Mes produits
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <a href="{% url 'ajouter_produit' %}" class="btn btn-outline-success w-100">
+                                <i class="fa fa-plus"></i> Ajouter produit
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

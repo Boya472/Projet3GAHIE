@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block title %}{{ categorie.nom }} - AfriBoyStyle{% endblock %}
+
+{% block content %}
+
+<!-- En-tête Catégorie -->
+<section class="bg-pattern py-5"style="
+    background-image: url('{% static 'img/motif2.jpg' %}');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;>
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item active">{{ categorie.nom }}</li>
+                    </ol>
+                </nav>
+                <h1 class="display-4" style="color: #8B4513;">
+                    🌍 {{ categorie.nom }}
+                </h1>
+                {% if categorie.description %}
+                <p class="lead" style="color: #3E2723;">{{ categorie.description }}</p>
+                {% endif %}
+                <p class="text-muted">
+                    <i class="fa fa-box"></i> {{ produits.count }} produit{{ produits.count|pluralize }} trouvé{{ produits.count|pluralize }}
+                </p>
+            </div>
+            {% if categorie.image %}
+            <div class="col-md-4 text-center">
+                <img src="{{ categorie.image.url }}" class="img-fluid rounded-circle border border-warning" style="max-width: 200px; border-width: 5px !important;" alt="{{ categorie.nom }}">
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Produits de la Catégorie -->
+<div class="container py-5">
+    <div class="row">
+        <!-- Filtres Sidebar -->
+        <div class="col-lg-3">
+            <div class="card mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fa fa-filter"></i> Filtres</h5>
+                </div>
+                <div class="card-body">
+                    <form method="get">
+                        <!-- Prix -->
+                        <h6 class="mb-3">Prix (FCFA)</h6>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <input type="number" name="prix_min" class="form-control form-control-sm" placeholder="Min" value="{{ request.GET.prix_min }}">
+                            </div>
+                            <div class="col-6">
+                                <input type="number" name="prix_max" class="form-control form-control-sm" placeholder="Max" value="{{ request.GET.prix_max }}">
+                            </div>
+                        </div>
+
+                        <!-- Taille (si applicable) -->
+                        <h6 class="mb-2">Taille</h6>
+                        <div class="mb-3">
+                            {% for taille in "XS,S,M,L,XL,XXL,XXXL"|split:"," %}
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="taille" value="{{ taille }}" id="taille{{ taille }}">
+                                <label class="form-check-label" for="taille{{ taille }}">
+                                    {{ taille }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Disponibilité -->
+                        <h6 class="mb-2">Disponibilité</h6>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" name="en_stock" value="1" id="en_stock">
+                            <label class="form-check-label" for="en_stock">
+                                En stock seulement
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-sm w-100">
+                            <i class="fa fa-check"></i> Appliquer
+                        </button>
+                        <a href="{% url 'categorie_detail' slug=categorie.slug %}" class="btn btn-outline-secondary btn-sm w-100 mt-2">
+                            <i class="fa fa-redo"></i> Réinitialiser
+                        </a>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Autres Catégories -->
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h6 class="mb-0">Autres Catégories</h6>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'catalogue' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-th"></i> Toutes les catégories
+                    </a>
+                    {% for cat in categories %}
+                    <a href="{% url 'categorie_detail' slug=cat.slug %}" class="list-group-item list-group-item-action {% if cat.id == categorie.id %}active{% endif %}">
+                        {{ cat.nom }}
+                        <span class="badge bg-secondary float-end">{{ cat.nombre_produits }}</span>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Grille de Produits -->
+        <div class="col-lg-9">
+            <!-- Tri -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <strong>{{ produits.count }}</strong> produit{{ produits.count|pluralize }}
+                </div>
+                <div>
+                    <select class="form-select" onchange="window.location.href='?sort=' + this.value">
+                        <option value="">Trier par</option>
+                        <option value="-date_ajout" {% if request.GET.sort == '-date_ajout' %}selected{% endif %}>Plus récents</option>
+                        <option value="prix" {% if request.GET.sort == 'prix' %}selected{% endif %}>Prix croissant</option>
+                        <option value="-prix" {% if request.GET.sort == '-prix' %}selected{% endif %}>Prix décroissant</option>
+                        <option value="-vues" {% if request.GET.sort == '-vues' %}selected{% endif %}>Plus populaires</option>
+                        <option value="nom" {% if request.GET.sort == 'nom' %}selected{% endif %}>Nom A-Z</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Produits -->
+            {% if produits %}
+            <div class="row">
+                {% for produit in produits %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <a href="{% url 'detail_produit' slug=produit.slug %}">
+                            <img src="{{ produit.image_principale.url }}" class="card-img-top" alt="{{ produit.nom }}" style="height: 250px; object-fit: cover;">
+                        </a>
+                        <div class="card-body">
+                            <ul class="list-unstyled d-flex justify-content-between mb-2">
+                                <li>
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= produit.note_moyenne %}
+                                            <i class="fa fa-star text-warning"></i>
+                                        {% else %}
+                                            <i class="fa fa-star text-muted"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <small class="text-muted">({{ produit.nombre_avis }})</small>
+                                </li>
+                            </ul>
+                            <a href="{% url 'detail_produit' slug=produit.slug %}" class="h5 text-decoration-none text-dark d-block mb-2">
+                                {{ produit.nom|truncatewords:5 }}
+                            </a>
+                            <p class="card-text small text-muted mb-2">
+                                {{ produit.description|truncatewords:12 }}
+                            </p>
+                            <p class="mb-2">
+                                <i class="fa fa-store text-muted small"></i>
+                                <small class="text-muted">{{ produit.vendeur.nom_boutique }}</small>
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <strong class="text-success h5 mb-0">{{ produit.prix }} FCFA</strong>
+                                {% if produit.stock > 0 %}
+                                    <span class="badge bg-success">En stock</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Rupture</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fa fa-box-open fa-4x text-muted mb-3"></i>
+                <h4>Aucun produit dans cette catégorie</h4>
+                <p class="text-muted">Essayez une autre catégorie ou revenez plus tard.</p>
+                <a href="{% url 'catalogue' %}" class="btn btn-primary mt-3">
+                    <i class="fa fa-shopping-bag"></i> Voir toute la boutique
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

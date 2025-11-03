@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mes Commandes - AfriBoyStyle{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <h1 class="mb-4"><i class="fa fa-shopping-bag"></i> Mes Commandes</h1>
+
+    {% if commandes %}
+    <div class="row">
+        {% for commande in commandes %}
+        <div class="col-12 mb-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>Commande #{{ commande.numero_commande }}</strong>
+                        <br>
+                        <small class="text-muted">{{ commande.date_commande|date:"d/m/Y à H:i" }}</small>
+                    </div>
+                    <div>
+                        {% if commande.statut == 'en_attente' %}
+                            <span class="badge bg-warning text-dark">En attente</span>
+                        {% elif commande.statut == 'confirmee' %}
+                            <span class="badge bg-info">Confirmée</span>
+                        {% elif commande.statut == 'en_preparation' %}
+                            <span class="badge bg-primary">En préparation</span>
+                        {% elif commande.statut == 'expediee' %}
+                            <span class="badge bg-secondary">Expédiée</span>
+                        {% elif commande.statut == 'livree' %}
+                            <span class="badge bg-success">Livrée</span>
+                        {% elif commande.statut == 'annulee' %}
+                            <span class="badge bg-danger">Annulée</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Produits -->
+                        <div class="col-md-8">
+                            <h6 class="mb-3">Articles commandés :</h6>
+                            {% for ligne in commande.lignes.all %}
+                            <div class="d-flex mb-3 pb-3 {% if not forloop.last %}border-bottom{% endif %}">
+                                <img src="{{ ligne.produit.image_principale.url }}" class="img-thumbnail me-3" style="width: 80px; height: 80px; object-fit: cover;" alt="{{ ligne.produit.nom }}">
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">
+                                        <a href="{% url 'detail_produit' slug=ligne.produit.slug %}" class="text-decoration-none text-dark">
+                                            {{ ligne.produit.nom }}
+                                        </a>
+                                    </h6>
+                                    <small class="text-muted">{{ ligne.produit.vendeur.nom_boutique }}</small>
+                                    <br>
+                                    <small>Quantité : {{ ligne.quantite }}</small>
+                                    {% if ligne.taille %}
+                                    <br><small>Taille : {{ ligne.taille }}</small>
+                                    {% endif %}
+                                    <div class="mt-1">
+                                        <strong>{{ ligne.sous_total }} FCFA</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Résumé -->
+                        <div class="col-md-4">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6>Résumé</h6>
+                                    <ul class="list-unstyled mb-3">
+                                        <li class="d-flex justify-content-between py-1">
+                                            <span>Sous-total :</span>
+                                            <strong>{{ commande.montant_produits }} FCFA</strong>
+                                        </li>
+                                        <li class="d-flex justify-content-between py-1">
+                                            <span>Livraison :</span>
+                                            <strong>{{ commande.frais_livraison }} FCFA</strong>
+                                        </li>
+                                        <li class="d-flex justify-content-between py-2 border-top">
+                                            <span><strong>Total :</strong></span>
+                                            <strong class="text-success">{{ commande.montant_total }} FCFA</strong>
+                                        </li>
+                                    </ul>
+
+                                    <hr>
+
+                                    <h6>Livraison</h6>
+                                    <p class="small mb-2">
+                                        {{ commande.adresse_livraison }}<br>
+                                        {{ commande.ville }}
+                                        {% if commande.code_postal %}, {{ commande.code_postal }}{% endif %}
+                                    </p>
+
+                                    <h6>Paiement</h6>
+                                    <p class="small mb-2">
+                                        {{ commande.get_mode_paiement_display }}
+                                        {% if commande.paiement_valide %}
+                                            <br><span class="badge bg-success">Payé</span>
+                                        {% else %}
+                                            <br><span class="badge bg-warning text-dark">En attente</span>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <a href="{% url 'detail_commande' commande.id %}" class="btn btn-outline-primary btn-sm">
+                        <i class="fa fa-eye"></i> Voir les détails
+                    </a>
+                    {% if commande.statut in 'en_attente,confirmee' %}
+                    <a href="{% url 'annuler_commande' commande.id %}" class="btn btn-outline-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir annuler cette commande ?')">
+                        <i class="fa fa-times"></i> Annuler
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <!-- Aucune commande -->
+    <div class="text-center py-5">
+        <i class="fa fa-shopping-bag fa-5x text-muted mb-4"></i>
+        <h3>Vous n'avez pas encore de commandes</h3>
+        <p class="text-muted">Commencez vos achats dès maintenant !</p>
+        <a href="{% url 'catalogue' %}" class="btn btn-success btn-lg mt-3">
+            <i class="fa fa-shopping-cart"></i> Découvrir la Boutique
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

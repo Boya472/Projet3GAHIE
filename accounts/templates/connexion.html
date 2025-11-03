@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Connexion - AfriBoyStyle{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <h2 class="h3">Connexion</h2>
+                        <p class="text-muted">Connectez-vous à votre compte</p>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Nom d'utilisateur</label>
+                            <input type="text" class="form-control" id="username" name="username" required autofocus>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mot de passe</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="remember">
+                            <label class="form-check-label" for="remember">
+                                Se souvenir de moi
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100 btn-lg">
+                            <i class="fa fa-sign-in-alt"></i> Se connecter
+                        </button>
+                    </form>
+
+                    <hr class="my-4">
+
+                    <div class="text-center">
+                        <p class="mb-0">Pas encore de compte ?</p>
+                        <a href="{% url 'inscription_client' %}" class="btn btn-outline-primary mt-2 me-2">
+                            S'inscrire comme Client
+                        </a>
+                        <a href="{% url 'inscription_vendeur' %}" class="btn btn-outline-secondary mt-2">
+                            S'inscrire comme Vendeur
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

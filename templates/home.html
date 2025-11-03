@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}AfriBoyStyle - Mode Africaine Moderne{% endblock %}
+
+{% block content %}
+
+<!-- Hero Carousel -->
+<div id="template-mo-zay-hero-carousel" class="carousel slide" data-bs-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="0" class="active"></li>
+        <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="1"></li>
+        <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+        <!-- Slide 1 -->
+        <div class="carousel-item active">
+            <div class="container">
+                <div class="row p-5">
+                    <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                        <img class="img-fluid" src="{% static 'img/fondj.jpg' %}" alt="" style="width: 90%; height: 85%;">
+                    </div>
+                    <div class="col-lg-6 mb-0 d-flex align-items-center">
+                        <div class="text-align-left align-self-center">
+                            <h1 class="h1" style="color: #D4A017; font-size: 3.5rem;"><b>AfriBoy</b><span style="color: #FF6B35;">Style</span></h1>
+                            <h3 class="h2" style="color: #8B4513;">Mode Africaine Moderne</h3>
+                            <p style="color: #3E2723; font-size: 1.1rem;">
+                                Découvrez notre collection unique de vêtements, sacs et chaussures inspirés de la culture africaine.
+                                <br><strong>Style moderne, authenticité préservée.</strong>
+                            </p>
+                            <a href="{% url 'catalogue' %}" class="btn btn-success btn-lg" style="padding: 15px 40px; font-size: 1.2rem;">
+                                🛍️ Découvrir la Boutique
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Slide 2 -->
+        <div class="carousel-item">
+            <div class="container">
+                <div class="row p-5">
+                    <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                        <img class="img-fluid" src="{% static 'img/fond5.jpg' %}" alt="" style="width: 90%; height: 95%;">
+                    </div>
+                    <div class="col-lg-6 mb-0 d-flex align-items-center">
+                        <div class="text-align-left">
+                            <h1 class="h1">Nouveautés</h1>
+                            <h3 class="h2">Collection 2025</h3>
+                            <p>
+                                Explorez nos dernières créations : wax moderne, dashiki élégant, accessoires tendance.
+                            </p>
+                            <a href="{% url 'catalogue' %}" class="btn btn-success btn-lg">Voir les Nouveautés</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Slide 3 -->
+        <div class="carousel-item">
+            <div class="container">
+                <div class="row p-5">
+                    <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                        <img class="img-fluid" src="{% static 'img/fond3.jpg' %}" alt="" style="width: 90%; height: 95%;">
+                    </div>
+                    <div class="col-lg-6 mb-0 d-flex align-items-center">
+                        <div class="text-align-left">
+                            <h1 class="h1">Devenez Vendeur</h1>
+                            <h3 class="h2">Vendez vos Créations</h3>
+                            <p>
+                                Rejoignez notre marketplace et partagez votre talent avec le monde entier.
+                            </p>
+                            <a href="{% url 'inscription_vendeur' %}" class="btn btn-success btn-lg">S'inscrire Vendeur</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="carousel-control-prev text-decoration-none w-auto ps-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="prev">
+        <i class="fas fa-chevron-left"></i>
+    </a>
+    <a class="carousel-control-next text-decoration-none w-auto pe-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="next">
+        <i class="fas fa-chevron-right"></i>
+    </a>
+</div>
+<!-- End Hero Carousel -->
+
+
+<!-- Categories Section -->
+<section class="container py-5">
+    <div class="row text-center pt-3">
+        <div class="col-lg-6 m-auto">
+            <h1 class="h1">Catégories</h1>
+            <p>Explorez nos différentes catégories de produits</p>
+        </div>
+    </div>
+    <div class="row">
+        {% for categorie in categories %}
+        <div class="col-12 col-md-4 p-5 mt-3">
+            <a href="{% url 'categorie_detail' slug=categorie.slug %}"><img src="{{ categorie.image.url }}" class="rounded-circle img-fluid border"></a>
+            <h5 class="text-center mt-3 mb-3">{{ categorie.nom }}</h5>
+            <p class="text-center"><a href="{% url 'categorie_detail' slug=categorie.slug %}" class="btn btn-success">Voir la Catégorie</a></p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+<!-- End Categories -->
+
+
+<!-- Nouveautés -->
+<section class="bg-light">
+    <div class="container py-5">
+        <div class="row text-center py-3">
+            <div class="col-lg-6 m-auto">
+                <h1 class="h1">Nouveautés</h1>
+                <p>Découvrez nos derniers produits ajoutés</p>
+            </div>
+        </div>
+        <div class="row">
+            {% for produit in produits_recents %}
+            <div class="col-12 col-md-4 col-lg-3 mb-4">
+                <div class="card h-100">
+                    <a href="{% url 'detail_produit' slug=produit.slug %}">
+                        <img src="{{ produit.image_principale.url }}" class="card-img-top" alt="{{ produit.nom }}">
+                    </a>
+                    <div class="card-body">
+                        <ul class="list-unstyled d-flex justify-content-between">
+                            <li>
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= produit.note_moyenne %}
+                                        <i class="text-warning fa fa-star"></i>
+                                    {% else %}
+                                        <i class="text-muted fa fa-star"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </li>
+                            <li class="text-muted text-right">{{ produit.prix }} FCFA</li>
+                        </ul>
+                        <a href="{% url 'detail_produit' slug=produit.slug %}" class="h2 text-decoration-none text-dark">{{ produit.nom|truncatewords:5 }}</a>
+                        <p class="card-text">{{ produit.description|truncatewords:10 }}</p>
+                        <p class="text-muted">Vendeur: {{ produit.vendeur.nom_boutique }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<!-- End Nouveautés -->
+
+
+<!-- Produits Populaires -->
+<section class="container py-5">
+    <div class="row text-center pt-3">
+        <div class="col-lg-6 m-auto">
+            <h1 class="h1">Produits Populaires</h1>
+            <p>Les produits les plus vus et appréciés</p>
+        </div>
+    </div>
+    <div class="row">
+        {% for produit in produits_populaires %}
+        <div class="col-12 col-md-4 col-lg-3 mb-4">
+            <div class="card h-100">
+                <a href="{% url 'detail_produit' slug=produit.slug %}">
+                    <img src="{{ produit.image_principale.url }}" class="card-img-top" alt="{{ produit.nom }}">
+                </a>
+                <div class="card-body">
+                    <ul class="list-unstyled d-flex justify-content-between">
+                        <li>
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= produit.note_moyenne %}
+                                    <i class="text-warning fa fa-star"></i>
+                                {% else %}
+                                    <i class="text-muted fa fa-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </li>
+                        <li class="text-muted text-right">{{ produit.prix }} FCFA</li>
+                    </ul>
+                    <a href="{% url 'detail_produit' slug=produit.slug %}" class="h2 text-decoration-none text-dark">{{ produit.nom|truncatewords:5 }}</a>
+                    <p class="card-text">{{ produit.description|truncatewords:10 }}</p>
+                    <p class="text-muted">{{ produit.vues }} vues</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+<!-- End Produits Populaires -->
+
+{% endblock %}

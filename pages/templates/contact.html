@@ -1,0 +1,306 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact - AfriBoyStyle{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<div class="bg-pattern py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 mb-4" style="color: #8B4513;">📞 Contactez-Nous</h1>
+                <p class="lead" style="color: #3E2723;">
+                    Notre équipe est à votre écoute pour répondre à toutes vos questions. N'hésitez pas à nous contacter !
+                </p>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="p-5">
+                    <i class="fa fa-comments fa-10x" style="color: #D4A017; opacity: 0.3;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Informations de Contact -->
+<section class="container py-5">
+    <div class="row mb-5">
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100 border-0 shadow">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <i class="fa fa-map-marker-alt fa-3x" style="color: #FF6B35;"></i>
+                    </div>
+                    <h5 style="color: #8B4513;">Notre Adresse</h5>
+                    <p class="text-muted">
+                        Abidjan, Cocody Riviera<br>
+                        Côte d'Ivoire
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100 border-0 shadow">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <i class="fa fa-phone fa-3x" style="color: #D4A017;"></i>
+                    </div>
+                    <h5 style="color: #8B4513;">Téléphone</h5>
+                    <p class="text-muted">
+                        +225 05 86 11 19 01<br>
+                        <small>Lundi - Samedi: 8h - 18h</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100 border-0 shadow">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <i class="fa fa-envelope fa-3x" style="color: #DC143C;"></i>
+                    </div>
+                    <h5 style="color: #8B4513;">Email</h5>
+                    <p class="text-muted">
+                        contact@afriboystyle.com<br>
+                        support@afriboystyle.com
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Formulaire de Contact -->
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card border-0 shadow-lg">
+                    <div class="card-body p-5">
+                        <h2 class="text-center mb-4" style="color: #8B4513;">
+                            <i class="fa fa-paper-plane"></i> Envoyez-nous un Message
+                        </h2>
+                        
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <form method="post" action="{% url 'contact' %}">
+                            {% csrf_token %}
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="nom" class="form-label" style="color: #8B4513;">
+                                        <i class="fa fa-user"></i> Nom complet *
+                                    </label>
+                                    <input type="text" class="form-control" id="nom" name="nom" required>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label" style="color: #8B4513;">
+                                        <i class="fa fa-envelope"></i> Email *
+                                    </label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="telephone" class="form-label" style="color: #8B4513;">
+                                        <i class="fa fa-phone"></i> Téléphone
+                                    </label>
+                                    <input type="tel" class="form-control" id="telephone" name="telephone">
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="sujet" class="form-label" style="color: #8B4513;">
+                                        <i class="fa fa-tag"></i> Sujet *
+                                    </label>
+                                    <select class="form-select" id="sujet" name="sujet" required>
+                                        <option value="">Choisir un sujet...</option>
+                                        <option value="question_generale">Question générale</option>
+                                        <option value="commande">Question sur une commande</option>
+                                        <option value="produit">Question sur un produit</option>
+                                        <option value="vendeur">Devenir vendeur</option>
+                                        <option value="partenariat">Partenariat</option>
+                                        <option value="reclamation">Réclamation</option>
+                                        <option value="autre">Autre</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="message" class="form-label" style="color: #8B4513;">
+                                    <i class="fa fa-comment"></i> Votre Message *
+                                </label>
+                                <textarea class="form-control" id="message" name="message" rows="6" required placeholder="Décrivez votre demande en détail..."></textarea>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fa fa-paper-plane"></i> Envoyer le Message
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Rapide -->
+<section class="container py-5">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <h2 class="text-center mb-5" style="color: #8B4513;">
+                <i class="fa fa-question-circle"></i> Questions Fréquentes
+            </h2>
+            
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item mb-3 border-0 shadow-sm">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" style="color: #8B4513; background-color: #FFF8DC;">
+                            <i class="fa fa-shipping-fast me-2" style="color: #D4A017;"></i>
+                            Quels sont les délais de livraison ?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Nous expédions sous 48h. La livraison prend généralement 3-7 jours en Côte d'Ivoire et 7-15 jours pour les autres pays africains.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item mb-3 border-0 shadow-sm">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" style="color: #8B4513;">
+                            <i class="fa fa-credit-card me-2" style="color: #D4A017;"></i>
+                            Quels modes de paiement acceptez-vous ?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Nous acceptons Mobile Money (Orange Money, MTN Money, Moov Money), Wave, et les cartes bancaires (Visa, Mastercard).
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item mb-3 border-0 shadow-sm">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" style="color: #8B4513;">
+                            <i class="fa fa-undo me-2" style="color: #D4A017;"></i>
+                            Puis-je retourner un produit ?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Oui ! Vous avez 14 jours pour retourner un produit s'il ne vous convient pas. Le produit doit être dans son état d'origine avec les étiquettes.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item mb-3 border-0 shadow-sm">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" style="color: #8B4513;">
+                            <i class="fa fa-store me-2" style="color: #D4A017;"></i>
+                            Comment devenir vendeur ?
+                        </button>
+                    </h2>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Inscrivez-vous via notre <a href="{% url 'inscription_vendeur' %}" style="color: #D4A017;">formulaire vendeur</a>. Notre équipe vérifiera votre demande sous 48h.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item mb-3 border-0 shadow-sm">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" style="color: #8B4513;">
+                            <i class="fa fa-globe me-2" style="color: #D4A017;"></i>
+                            Livrez-vous à l'international ?
+                        </button>
+                    </h2>
+                    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Actuellement, nous livrons dans 15+ pays africains. Nous travaillons à étendre notre couverture internationale prochainement.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Réseaux Sociaux -->
+<section class="bg-pattern py-5">
+    <div class="container text-center">
+        <h3 class="mb-4" style="color: #8B4513;">
+            <i class="fa fa-share-alt"></i> Suivez-Nous
+        </h3>
+        <p class="text-muted mb-4">Restez connectés pour découvrir nos nouveautés et promotions !</p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="#" class="btn btn-outline-primary btn-lg rounded-circle" style="width: 60px; height: 60px; line-height: 45px;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="btn btn-outline-info btn-lg rounded-circle" style="width: 60px; height: 60px; line-height: 45px;">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="btn btn-outline-danger btn-lg rounded-circle" style="width: 60px; height: 60px; line-height: 45px;">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="btn btn-outline-success btn-lg rounded-circle" style="width: 60px; height: 60px; line-height: 45px;">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="#" class="btn btn-outline-primary btn-lg rounded-circle" style="width: 60px; height: 60px; line-height: 45px;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Horaires d'ouverture -->
+<section class="container py-5">
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <div class="card border-0 shadow">
+                <div class="card-body p-4">
+                    <h4 class="text-center mb-4" style="color: #8B4513;">
+                        <i class="fa fa-clock"></i> Horaires du Service Client
+                    </h4>
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <td><strong>Lundi - Vendredi</strong></td>
+                                <td class="text-end text-muted">8h00 - 18h00</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Samedi</strong></td>
+                                <td class="text-end text-muted">9h00 - 16h00</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Dimanche</strong></td>
+                                <td class="text-end text-muted">Fermé</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="alert alert-info mt-3 mb-0" role="alert">
+                        <i class="fa fa-info-circle"></i> 
+                        <small>Temps de réponse moyen: 2-4 heures ouvrables</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

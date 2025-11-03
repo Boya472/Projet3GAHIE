@@ -1,0 +1,49 @@
+
+
+<div class="order-summary-card">
+    {% if compact %}
+    <!-- Version compacte (pour checkout) -->
+    <div class="list-group">
+        {% for item in items %}
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <strong style="font-size:0.95rem">{{ item.produit.nom|truncatewords:4 }}</strong><br>
+                <small class="text-muted">Qté: {{ item.quantite }}{% if item.taille %} • {{ item.taille }}{% endif %}</small>
+            </div>
+            <div><strong>{{ item.sous_total }} FCFA</strong></div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <ul class="list-unstyled mt-3 mb-0">
+        <li class="d-flex justify-content-between"><span>Sous-total</span><strong>{{ sous_total }} FCFA</strong></li>
+        <li class="d-flex justify-content-between"><span>Frais livraison</span><strong>{{ frais_livraison }} FCFA</strong></li>
+        <li class="d-flex justify-content-between border-top pt-2"><span>Total</span><strong class="text-success">{{ total }} FCFA</strong></li>
+    </ul>
+
+    {% else %}
+    <!-- Version complète (pour paiement) -->
+    <div class="card p-3 mb-3">
+        <h6 class="mb-3">Récapitulatif de la commande</h6>
+        {% for item in items %}
+        <div class="d-flex mb-3 pb-3 border-bottom">
+            <img src="{{ item.produit.image_principale.url }}" class="img-thumbnail me-2" style="width:60px; height:60px; object-fit:cover;" alt="{{ item.produit.nom }}">
+            <div class="flex-grow-1">
+                <strong>{{ item.produit.nom }}</strong>
+                <div class="small text-muted">Qté: {{ item.quantite }}{% if item.taille %} • Taille: {{ item.taille }}{% endif %}</div>
+            </div>
+            <div class="text-end"><strong>{{ item.sous_total }} FCFA</strong></div>
+        </div>
+        {% endfor %}
+
+        <div class="d-flex justify-content-between mt-3"><span>Sous-total</span><strong>{{ sous_total }} FCFA</strong></div>
+        <div class="d-flex justify-content-between"><span>Frais livraison</span><strong>{{ frais_livraison }} FCFA</strong></div>
+        <div class="d-flex justify-content-between mt-2 border-top pt-2"><span class="fw-bold">Total</span><strong class="text-success">{{ total }} FCFA</strong></div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+/* Styles légers — tu peux les mettre dans ton CSS global */
+.order-summary-card .card { background: #fff; border-radius: 8px; }
+</style>

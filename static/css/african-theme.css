@@ -1,0 +1,343 @@
+/* ========================================
+   AFRIBOYSTYLE - Thème Africain Moderne
+   ======================================== */
+
+/* COULEURS AFRICAINES */
+:root {
+    /* Couleurs principales inspirées du wax et de l'Afrique */
+    --primary-color: #D4A017;        /* Or africain / Gold */
+    --secondary-color: #8B4513;      /* Marron terre d'Afrique */
+    --accent-orange: #FF6B35;        /* Orange wax vif */
+    --accent-red: #DC143C;           /* Rouge dashiki */
+    --accent-green: #2D5016;         /* Vert forêt africaine */
+    --accent-yellow: #FFD700;        /* Jaune soleil */
+    --accent-blue: #1E90FF;          /* Bleu indigo */
+    
+    /* Couleurs neutres */
+    --dark-brown: #3E2723;
+    --light-beige: #F5E6D3;
+    --cream: #FFF8DC;
+    
+    /* Texte */
+    --text-dark: #2C1810;
+    --text-light: #FFF;
+}
+
+/* TYPOGRAPHIE */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700;900&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-dark);
+    background-color: var(--cream);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--dark-brown);
+}
+
+/* NAVBAR */
+.navbar {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-bottom: 3px solid var(--accent-orange);
+}
+
+.navbar-brand {
+    font-family: 'Playfair Display', serif !important;
+    font-weight: 900 !important;
+    font-size: 1.8rem !important;
+    color: var(--text-light) !important;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.navbar-brand strong {
+    color: var(--accent-yellow) !important;
+}
+
+.nav-link {
+    color: var(--text-light) !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-link:hover {
+    color: var(--accent-yellow) !important;
+    transform: translateY(-2px);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--accent-yellow);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+    width: 80%;
+}
+
+/* TOP BAR */
+#templatemo_nav_top {
+    background: var(--dark-brown) !important;
+    border-bottom: 2px solid var(--accent-orange);
+}
+
+/* BOUTONS */
+.btn-success,
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-red) 100%);
+    border: none;
+    font-weight: 600;
+    padding: 12px 30px;
+    border-radius: 30px;
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+    transition: all 0.3s ease;
+    color: white;
+}
+
+.btn-success:hover,
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-orange) 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+}
+
+.btn-outline-primary {
+    color: var(--accent-orange);
+    border: 2px solid var(--accent-orange);
+    border-radius: 30px;
+    font-weight: 600;
+}
+
+.btn-outline-primary:hover {
+    background: var(--accent-orange);
+    color: white;
+}
+
+/* BADGES */
+.badge.bg-success {
+    background: linear-gradient(135deg, var(--accent-green) 0%, #4CAF50 100%) !important;
+}
+
+.badge.bg-warning {
+    background: linear-gradient(135deg, var(--accent-yellow) 0%, #FFA726 100%) !important;
+    color: var(--text-dark) !important;
+}
+
+.badge.bg-info {
+    background: linear-gradient(135deg, var(--accent-blue) 0%, #29B6F6 100%) !important;
+}
+
+/* CARDS */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(212, 160, 23, 0.3);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    font-weight: 600;
+    border-bottom: 3px solid var(--accent-orange);
+}
+
+/* PRODUITS */
+.card-img-top {
+    height: 280px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.1);
+}
+
+/* ÉTOILES */
+.fa-star {
+    color: var(--accent-yellow);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+/* PRIX */
+.text-success,
+.h5.text-success {
+    color: var(--accent-orange) !important;
+    font-weight: 700;
+}
+
+/* FOOTER */
+footer {
+    background: linear-gradient(135deg, var(--dark-brown) 0%, var(--secondary-color) 100%);
+    border-top: 4px solid var(--primary-color);
+}
+
+.footer-link-list a {
+    color: var(--light-beige) !important;
+    transition: color 0.3s ease;
+}
+
+.footer-link-list a:hover {
+    color: var(--accent-yellow) !important;
+}
+
+.logo {
+    color: var(--accent-yellow) !important;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+/* CAROUSEL */
+.carousel-item {
+    background: linear-gradient(135deg, var(--light-beige) 0%, var(--cream) 100%);
+}
+
+.carousel-item h1,
+.carousel-item h3 {
+    color: var(--dark-brown);
+    text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
+}
+
+/* MOTIF WAX (fond décoratif) */
+.bg-pattern {
+    background-image: 
+        repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(212,160,23,.1) 35px, rgba(212,160,23,.1) 70px),
+        repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(139,69,19,.1) 35px, rgba(139,69,19,.1) 70px);
+}
+
+/* SECTION CATEGORIES */
+.rounded-circle {
+    border: 4px solid var(--primary-color);
+    box-shadow: 0 5px 20px rgba(212,160,23,0.3);
+    transition: all 0.3s ease;
+}
+
+.rounded-circle:hover {
+    border-color: var(--accent-orange);
+    transform: scale(1.05);
+}
+
+/* PANIER ICON */
+.nav-icon .badge {
+    background: var(--accent-red) !important;
+    border: 2px solid white;
+    font-weight: 700;
+}
+
+/* FORMULAIRES */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--accent-orange);
+    box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
+}
+
+/* TABLE */
+.table-hover tbody tr:hover {
+    background-color: rgba(212, 160, 23, 0.1);
+}
+
+/* ALERT */
+.alert-success {
+    background-color: rgba(45, 80, 22, 0.1);
+    border-left: 4px solid var(--accent-green);
+    color: var(--accent-green);
+}
+
+.alert-warning {
+    background-color: rgba(255, 215, 0, 0.1);
+    border-left: 4px solid var(--accent-yellow);
+    color: var(--secondary-color);
+}
+
+.alert-info {
+    background-color: rgba(30, 144, 255, 0.1);
+    border-left: 4px solid var(--accent-blue);
+    color: var(--accent-blue);
+}
+
+/* PROGRESS BAR */
+.progress-bar {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-orange) 100%);
+}
+
+/* LIENS */
+a {
+    color: var(--accent-orange);
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--accent-red);
+}
+
+/* DASHBOARD CARDS */
+.bg-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+.bg-success {
+    background: linear-gradient(135deg, var(--accent-green) 0%, #4CAF50 100%) !important;
+}
+
+.bg-warning {
+    background: linear-gradient(135deg, var(--accent-yellow) 0%, var(--accent-orange) 100%) !important;
+}
+
+.bg-info {
+    background: linear-gradient(135deg, var(--accent-blue) 0%, #29B6F6 100%) !important;
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+    animation: fadeIn 0.5s ease;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.3rem !important;
+    }
+    
+    .card-img-top {
+        height: 200px;
+    }
+}
+
+/* SCROLLBAR personnalisée */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--light-beige);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-red) 100%);
+}

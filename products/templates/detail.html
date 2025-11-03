@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ produit.nom }} - AfriBoyStyle{% endblock %}
+
+{% block content %}
+
+<!-- Détail Produit -->
+<section class="bg-light">
+    <div class="container pb-5">
+        <div class="row">
+            <!-- Images Produit -->
+            <div class="col-lg-5 mt-5">
+                <div class="card mb-3">
+                    <img class="card-img img-fluid" src="{{ produit.image_principale.url }}" alt="{{ produit.nom }}" id="product-detail">
+                </div>
+                <div class="row">
+                    <!-- Thumbnails Images supplémentaires -->
+                    <div class="col-3 p-2">
+                        <a href="#" data-image="{{ produit.image_principale.url }}">
+                            <img class="card-img img-fluid" src="{{ produit.image_principale.url }}" alt="{{ produit.nom }}">
+                        </a>
+                    </div>
+                    {% for image in images_supplementaires %}
+                    <div class="col-3 p-2">
+                        <a href="#" data-image="{{ image.image.url }}">
+                            <img class="card-img img-fluid" src="{{ image.image.url }}" alt="{{ produit.nom }}">
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Informations Produit -->
+            <div class="col-lg-7 mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="h2">{{ produit.nom }}</h1>
+                        
+                        <!-- Note et Prix -->
+                        <p class="h3 py-2">{{ produit.prix }} FCFA</p>
+                        
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <h6>Vendeur:</h6>
+                            </li>
+                            <li class="list-inline-item">
+                                <p class="text-muted"><strong>{{ produit.vendeur.nom_boutique }}</strong></p>
+                            </li>
+                        </ul>
+
+                        <!-- Étoiles -->
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <h6>Note:</h6>
+                            </li>
+                            <li class="list-inline-item">
+                                <p class="text-muted">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= note_moyenne %}
+                                            <i class="text-warning fa fa-star"></i>
+                                        {% else %}
+                                            <i class="text-muted fa fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                    ({{ nombre_avis }} avis)
+                                </p>
+                            </li>
+                        </ul>
+
+                        <!-- Description -->
+                        <h6>Description:</h6>
+                        <p>{{ produit.description }}</p>
+
+                        <!-- Étiquettes -->
+                        {% if produit.etiquettes.all %}
+                        <h6>Styles:</h6>
+                        <ul class="list-inline">
+                            {% for etiquette in produit.etiquettes.all %}
+                            <li class="list-inline-item">
+                                <span class="badge" style="background-color:  etiquette couleur ;">{{ etiquette.nom }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+
+                        <!-- Formulaire Ajout au Panier -->
+                        {% if produit.stock > 0 %}
+                        <form action="{% url 'ajouter_au_panier' produit.id %}" method="post">
+                            {% csrf_token %}
+                            
+                            <!-- Sélection Taille -->
+                            {% if produit.tailles_disponibles %}
+                            <div class="row pb-3">
+                                <div class="col d-grid">
+                                    <h6>Taille:</h6>
+                                    <select class="form-select" name="taille" required>
+                                        <option value="">Choisir une taille</option>
+                                        {% for taille in produit.tailles_disponibles %}
+                                        <option value="{{ taille }}">{{ taille }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            <!-- Quantité -->
+                            <div class="row pb-3">
+                                <div class="col d-grid">
+                                    <h6>Quantité:</h6>
+                                    <input type="number" name="quantite" value="1" min="1" max="{{ produit.stock }}" class="form-control">
+                                </div>
+                            </div>
+
+                            <!-- Stock -->
+                            <div class="row pb-3">
+                                <div class="col">
+                                    <span class="badge bg-success">En stock ({{ produit.stock }} disponibles)</span>
+                                </div>
+                            </div>
+
+                            <!-- Boutons -->
+                            <div class="row">
+                                <div class="col d-grid">
+                                    <button type="submit" class="btn btn-success btn-lg" name="submit" value="buy">
+                                        <i class="fa fa-shopping-cart"></i> Ajouter au Panier
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        {% else %}
+                        <div class="alert alert-danger">
+                            <i class="fa fa-exclamation-circle"></i> Ce produit est actuellement en rupture de stock.
+                        </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Avis -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="mb-4">Avis Clients ({{ nombre_avis }})</h3>
+                
+                {% if user.is_authenticated and user.role == 'client' %}
+                <div class="mb-4">
+                    <a href="{% url 'laisser_avis' produit.id %}" class="btn btn-primary">
+                        <i class="fa fa-star"></i> Laisser un avis
+                    </a>
+                </div>
+                {% endif %}
+
+                <!-- Liste des avis -->
+                {% if avis %}
+                    {% for avis_item in avis %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title">{{ avis_item.client.user.get_full_name|default:avis_item.client.user.username }}</h5>
+                                <div>
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= avis_item.note %}
+                                            <i class="text-warning fa fa-star"></i>
+                                        {% else %}
+                                            <i class="text-muted fa fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <p class="text-muted small">{{ avis_item.date_publication|date:"d/m/Y à H:i" }}</p>
+                            <p class="card-text">{{ avis_item.commentaire }}</p>
+                            
+                            {% if avis_item.reponse %}
+                            <div class="alert alert-light mt-3">
+                                <strong>Réponse du vendeur:</strong>
+                                <p class="mb-0">{{ avis_item.reponse.contenu }}</p>
+                                <small class="text-muted">{{ avis_item.reponse.date_reponse|date:"d/m/Y à H:i" }}</small>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">Aucun avis pour ce produit. Soyez le premier à donner votre avis !</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Produits Similaires -->
+{% if produits_similaires %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-6 m-auto">
+                <h1 class="h2">Produits Similaires</h1>
+            </div>
+        </div>
+        <div class="row">
+            {% for prod in produits_similaires %}
+            <div class="col-12 col-md-4 col-lg-3 mb-4">
+                <div class="card h-100">
+                    <a href="{% url 'detail_produit' slug=prod.slug %}">
+                        <img src="{{ prod.image_principale.url }}" class="card-img-top" alt="{{ prod.nom }}">
+                    </a>
+                    <div class="card-body">
+                        <a href="{% url 'detail_produit' slug=prod.slug %}" class="h2 text-decoration-none text-dark">
+                            {{ prod.nom|truncatewords:5 }}
+                        </a>
+                        <p class="text-muted">{{ prod.prix }} FCFA</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Changement d'image au clic sur thumbnail
+document.addEventListener('DOMContentLoaded', function() {
+    const thumbnails = document.querySelectorAll('[data-image]');
+    const mainImage = document.getElementById('product-detail');
+    
+    thumbnails.forEach(thumb => {
+        thumb.addEventListener('click', function(e) {
+            e.preventDefault();
+            mainImage.src = this.getAttribute('data-image');
+        });
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Commande #{{ commande.numero_commande }} - AfriBoyStyle{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="h2"><i class="fa fa-receipt"></i> Détail de la Commande</h1>
+                <a href="{% url 'mes_commandes' %}" class="btn btn-outline-secondary">
+                    <i class="fa fa-arrow-left"></i> Retour
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Informations Commande -->
+        <div class="col-lg-8">
+            <!-- En-tête -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <h5>Commande #{{ commande.numero_commande }}</h5>
+                            <p class="text-muted mb-0">Passée le {{ commande.date_commande|date:"d/m/Y à H:i" }}</p>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <h5>Statut</h5>
+                            {% if commande.statut == 'en_attente' %}
+                                <span class="badge bg-warning text-dark fs-6">En attente</span>
+                            {% elif commande.statut == 'confirmee' %}
+                                <span class="badge bg-info fs-6">Confirmée</span>
+                            {% elif commande.statut == 'en_preparation' %}
+                                <span class="badge bg-primary fs-6">En préparation</span>
+                            {% elif commande.statut == 'expediee' %}
+                                <span class="badge bg-secondary fs-6">Expédiée</span>
+                            {% elif commande.statut == 'livree' %}
+                                <span class="badge bg-success fs-6">Livrée</span>
+                            {% elif commande.statut == 'annulee' %}
+                                <span class="badge bg-danger fs-6">Annulée</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Suivi de livraison -->
+                    <div class="progress" style="height: 30px;">
+                        {% if commande.statut == 'en_attente' %}
+                            <div class="progress-bar bg-warning" style="width: 20%">En attente</div>
+                        {% elif commande.statut == 'confirmee' %}
+                            <div class="progress-bar bg-info" style="width: 40%">Confirmée</div>
+                        {% elif commande.statut == 'en_preparation' %}
+                            <div class="progress-bar bg-primary" style="width: 60%">En préparation</div>
+                        {% elif commande.statut == 'expediee' %}
+                            <div class="progress-bar bg-secondary" style="width: 80%">Expédiée</div>
+                        {% elif commande.statut == 'livree' %}
+                            <div class="progress-bar bg-success" style="width: 100%">Livrée</div>
+                        {% elif commande.statut == 'annulee' %}
+                            <div class="progress-bar bg-danger" style="width: 100%">Annulée</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produits -->
+            <div class="card mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fa fa-box"></i> Articles commandés</h5>
+                </div>
+                <div class="card-body">
+                    {% for ligne in lignes %}
+                    <div class="row mb-3 pb-3 {% if not forloop.last %}border-bottom{% endif %}">
+                        <div class="col-md-2">
+                            <img src="{{ ligne.produit.image_principale.url }}" class="img-fluid rounded" alt="{{ ligne.produit.nom }}">
+                        </div>
+                        <div class="col-md-6">
+                            <h6>
+                                <a href="{% url 'detail_produit' slug=ligne.produit.slug %}" class="text-decoration-none text-dark">
+                                    {{ ligne.produit.nom }}
+                                </a>
+                            </h6>
+                            <p class="text-muted mb-1">
+                                <small><i class="fa fa-store"></i> {{ ligne.produit.vendeur.nom_boutique }}</small>
+                            </p>
+                            <p class="mb-0">
+                                <small>Quantité : <strong>{{ ligne.quantite }}</strong></small>
+                                {% if ligne.taille %}
+                                <br><small>Taille : <strong>{{ ligne.taille }}</strong></small>
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="col-md-2 text-center">
+                            <p class="mb-0"><small>Prix unitaire</small></p>
+                            <strong>{{ ligne.prix_unitaire }} FCFA</strong>
+                        </div>
+                        <div class="col-md-2 text-center">
+                            <p class="mb-0"><small>Sous-total</small></p>
+                            <strong class="text-success">{{ ligne.sous_total }} FCFA</strong>
+                        </div>
+                    </div>
+
+                    <!-- Bouton Laisser un avis (si livré) -->
+                    {% if commande.statut == 'livree' %}
+                    <div class="text-end mt-2">
+                        <a href="{% url 'laisser_avis' ligne.produit.id %}" class="btn btn-sm btn-outline-primary">
+                            <i class="fa fa-star"></i> Laisser un avis
+                        </a>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Adresse de livraison -->
+            <div class="card mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fa fa-map-marker-alt"></i> Adresse de livraison</h5>
+                </div>
+                <div class="card-body">
+                    <p class="mb-1"><strong>{{ user.get_full_name|default:user.username }}</strong></p>
+                    <p class="mb-1">{{ commande.adresse_livraison }}</p>
+                    <p class="mb-1">{{ commande.ville }}{% if commande.code_postal %}, {{ commande.code_postal }}{% endif %}</p>
+                    <p class="mb-0"><i class="fa fa-phone"></i> {{ commande.telephone_livraison }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Résumé et Actions -->
+        <div class="col-lg-4">
+            <!-- Résumé financier -->
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Résumé</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="d-flex justify-content-between py-2 border-bottom">
+                            <span>Sous-total produits</span>
+                            <strong>{{ commande.montant_produits }} FCFA</strong>
+                        </li>
+                        <li class="d-flex justify-content-between py-2 border-bottom">
+                            <span>Frais de livraison</span>
+                            <strong>{{ commande.frais_livraison }} FCFA</strong>
+                        </li>
+                        <li class="d-flex justify-content-between py-3">
+                            <span class="h5 mb-0">Total</span>
+                            <strong class="h5 mb-0 text-success">{{ commande.montant_total }} FCFA</strong>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Paiement -->
+            <div class="card mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fa fa-credit-card"></i> Paiement</h5>
+                </div>
+                <div class="card-body">
+                    <p class="mb-2">
+                        <strong>Méthode :</strong><br>
+                        {{ commande.get_mode_paiement_display }}
+                    </p>
+                    <p class="mb-2">
+                        <strong>Statut :</strong><br>
+                        {% if commande.paiement_valide %}
+                            <span class="badge bg-success">Payé</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">En attente de paiement</span>
+                        {% endif %}
+                    </p>
+                    {% if commande.reference_paiement %}
+                    <p class="mb-0">
+                        <strong>Référence :</strong><br>
+                        <small class="text-muted">{{ commande.reference_paiement }}</small>
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="card">
+                <div class="card-body">
+                    {% if commande.statut in 'en_attente,confirmee' %}
+                    <a href="{% url 'annuler_commande' commande.id %}" class="btn btn-danger btn-block w-100 mb-2" onclick="return confirm('Êtes-vous sûr de vouloir annuler cette commande ?')">
+                        <i class="fa fa-times"></i> Annuler la commande
+                    </a>
+                    {% endif %}
+                    
+                    <button onclick="window.print()" class="btn btn-outline-secondary btn-block w-100 mb-2">
+                        <i class="fa fa-print"></i> Imprimer
+                    </button>
+                    
+                    <a href="{% url 'mes_commandes' %}" class="btn btn-outline-primary btn-block w-100">
+                        <i class="fa fa-list"></i> Toutes mes commandes
+                    </a>
+                </div>
+            </div>
+
+            <!-- Support -->
+            <div class="alert alert-info mt-4">
+                <h6><i class="fa fa-question-circle"></i> Besoin d'aide ?</h6>
+                <p class="mb-0 small">Contactez notre service client pour toute question concernant votre commande.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

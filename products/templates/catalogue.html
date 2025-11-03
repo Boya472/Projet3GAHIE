@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Boutique - AfriBoyStyle{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-3">
+            <h1 class="h2 pb-4">Catégories</h1>
+            <ul class="list-unstyled templatemo-accordion">
+                <li class="pb-3">
+                    <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="{% url 'catalogue' %}">
+                        Tous les produits
+                    </a>
+                </li>
+                {% for categorie in categories %}
+                <li class="pb-3">
+                    <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="{% url 'categorie_detail' slug=categorie.slug %}">
+                        {{ categorie.nom }}
+                        <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+
+            <!-- Filtres -->
+            <form method="get" action="{% url 'catalogue' %}">
+                <h1 class="h2 pb-4 mt-5">Filtres</h1>
+                
+                <!-- Filtre Prix -->
+                <div class="mb-4">
+                    <h5>Prix (FCFA)</h5>
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="number" name="prix_min" class="form-control" placeholder="Min" value="{{ request.GET.prix_min }}">
+                        </div>
+                        <div class="col-6">
+                            <input type="number" name="prix_max" class="form-control" placeholder="Max" value="{{ request.GET.prix_max }}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Étiquettes -->
+                <div class="mb-4">
+                    <h5>Styles</h5>
+                    {% for etiquette in etiquettes %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="etiquette" value="{{ etiquette.slug }}" id="etiq{{ etiquette.id }}">
+                        <label class="form-check-label" for="etiq{{ etiquette.id }}">
+                            {{ etiquette.nom }}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <button type="submit" class="btn btn-success btn-block">Appliquer les filtres</button>
+            </form>
+        </div>
+
+        <div class="col-lg-9">
+            <div class="row">
+                <div class="col-md-6">
+                    <ul class="list-inline shop-top-menu pb-3 pt-1">
+                        <li class="list-inline-item">
+                            <a class="h3 text-dark text-decoration-none mr-3" href="#">Tous</a>
+                        </li>
+                        <li class="list-inline-item">
+                            <span class="text-muted">{{ produits|length }} produits trouvés</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6 pb-4">
+                    <div class="d-flex">
+                        <select class="form-control" onchange="window.location.href='?sort=' + this.value">
+                            <option value="-date_ajout" {% if request.GET.sort == '-date_ajout' %}selected{% endif %}>Plus récents</option>
+                            <option value="prix" {% if request.GET.sort == 'prix' %}selected{% endif %}>Prix croissant</option>
+                            <option value="-prix" {% if request.GET.sort == '-prix' %}selected{% endif %}>Prix décroissant</option>
+                            <option value="-vues" {% if request.GET.sort == '-vues' %}selected{% endif %}>Plus populaires</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produits Grid -->
+            <div class="row">
+                {% if produits %}
+                    {% for produit in produits %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <a href="{% url 'detail_produit' slug=produit.slug %}">
+                                <img src="{{ produit.image_principale.url }}" class="card-img-top" alt="{{ produit.nom }}">
+                            </a>
+                            <div class="card-body">
+                                <ul class="list-unstyled d-flex justify-content-between">
+                                    <li>
+                                        {% for i in "12345" %}
+                                            {% if forloop.counter <= produit.note_moyenne %}
+                                                <i class="text-warning fa fa-star"></i>
+                                            {% else %}
+                                                <i class="text-muted fa fa-star"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                        <span class="text-muted">({{ produit.nombre_avis }})</span>
+                                    </li>
+                                    <li class="text-muted text-right">{{ produit.prix }} FCFA</li>
+                                </ul>
+                                <a href="{% url 'detail_produit' slug=produit.slug %}" class="h2 text-decoration-none text-dark">
+                                    {{ produit.nom|truncatewords:5 }}
+                                </a>
+                                <p class="card-text">
+                                    {{ produit.description|truncatewords:10 }}
+                                </p>
+                                <p class="text-muted small">
+                                    <i class="fa fa-store"></i> {{ produit.vendeur.nom_boutique }}
+                                </p>
+                                {% if produit.stock > 0 %}
+                                    <span class="badge bg-success">En stock ({{ produit.stock }})</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Rupture de stock</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="col-12">
+                        <div class="alert alert-info">
+                            <i class="fa fa-info-circle"></i> Aucun produit trouvé avec ces critères.
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Pagination -->
+            {% if is_paginated %}
+            <div class="row">
+                <ul class="pagination pagination-lg justify-content-end">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1">Début</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Précédent</a>
+                    </li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <span class="page-link">
+                            Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}
+                        </span>
+                    </li>
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Suivant</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Fin</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

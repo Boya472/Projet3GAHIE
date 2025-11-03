@@ -1,0 +1,257 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}À Propos - AfriBoyStyle{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<div class="bg-pattern py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 mb-4" style="color: #8B4513;">🌍 Notre Histoire</h1>
+                <p class="lead" style="color: #3E2723;">
+                    <strong>AfriBoyStyle</strong> est née de la passion pour la mode africaine et du désir de promouvoir la richesse culturelle de l'Afrique à travers le monde.
+                </p>
+            </div>
+            <div class="col-lg-6 text-center">
+                <img src="{% static 'img/mane.jpg' %}" class="img-fluid rounded" alt="AfriBoyStyle" style="border: 5px solid #D4A017;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Notre Mission -->
+<section class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto text-center mb-5">
+            <h2 class="mb-4" style="color: #D4A017;">
+                <i class="fa fa-bullseye"></i> Notre Mission
+            </h2>
+            <p class="lead">
+                Connecter les créateurs africains avec le monde entier, tout en préservant l'authenticité et la modernité de nos créations.
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100 border-0 shadow">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <i class="fa fa-heart fa-3x" style="color: #FF6B35;"></i>
+                    </div>
+                    <h5 style="color: #8B4513;">Authenticité</h5>
+                    <p class="text-muted">
+                        Nous valorisons l'authenticité de chaque création, inspirée des tissus traditionnels africains comme le wax et le dashiki.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100 border-0 shadow">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <i class="fa fa-users fa-3x" style="color: #D4A017;"></i>
+                    </div>
+                    <h5 style="color: #8B4513;">Communauté</h5>
+                    <p class="text-muted">
+                        Nous créons une plateforme où vendeurs et clients partagent leur amour pour la mode africaine.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100 border-0 shadow">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <i class="fa fa-rocket fa-3x" style="color: #DC143C;"></i>
+                    </div>
+                    <h5 style="color: #8B4513;">Innovation</h5>
+                    <p class="text-muted">
+                        Nous fusionnons tradition et modernité pour créer des pièces uniques qui s'adaptent au style de vie contemporain.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Nos Valeurs -->
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <h2 class="mb-4" style="color: #8B4513;">
+                    <i class="fa fa-star"></i> Nos Valeurs
+                </h2>
+                <div class="mb-4">
+                    <h5 style="color: #D4A017;">✨ Qualité</h5>
+                    <p class="text-muted">
+                        Nous sélectionnons rigoureusement chaque vendeur et produit pour garantir une qualité exceptionnelle.
+                    </p>
+                </div>
+                <div class="mb-4">
+                    <h5 style="color: #D4A017;">🌍 Culture</h5>
+                    <p class="text-muted">
+                        Chaque pièce raconte une histoire, célèbre une tradition et honore l'héritage africain.
+                    </p>
+                </div>
+                <div class="mb-4">
+                    <h5 style="color: #D4A017;">🤝 Équité</h5>
+                    <p class="text-muted">
+                        Nous offrons une rémunération juste aux créateurs avec une commission transparente de seulement 10%.
+                    </p>
+                </div>
+                <div class="mb-4">
+                    <h5 style="color: #D4A017;">🔒 Sécurité</h5>
+                    <p class="text-muted">
+                        Vos transactions sont 100% sécurisées avec des paiements via Mobile Money, Wave et cartes bancaires.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-lg">
+                    <div class="card-body p-4">
+                        <h4 class="mb-4 text-center" style="color: #8B4513;">
+                            <i class="fa fa-chart-line"></i> En Chiffres
+                        </h4>
+                        <div class="row text-center">
+                            <div class="col-6 mb-4">
+                                <h2 style="color: #FF6B35;">500+</h2>
+                                <p class="text-muted">Produits disponibles</p>
+                            </div>
+                            <div class="col-6 mb-4">
+                                <h2 style="color: #D4A017;">50+</h2>
+                                <p class="text-muted">Vendeurs partenaires</p>
+                            </div>
+                            <div class="col-6 mb-4">
+                                <h2 style="color: #2D5016;">1000+</h2>
+                                <p class="text-muted">Clients satisfaits</p>
+                            </div>
+                            <div class="col-6 mb-4">
+                                <h2 style="color: #DC143C;">15+</h2>
+                                <p class="text-muted">Pays desservis</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Notre Équipe / Fondateur -->
+<section class="container py-5">
+    <div class="row">
+        <div class="col-12 text-center mb-5">
+            <h2 style="color: #8B4513;">
+                <i class="fa fa-user-tie"></i> Notre Fondateur
+            </h2>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card border-0 shadow text-center">
+                <div class="card-body p-4">
+                    <div class="rounded-circle mx-auto mb-3" style="width: 150px; height: 150px; background: linear-gradient(135deg, #D4A017 0%, #FF6B35 100%);"></div>
+                    <h5 style="color: #8B4513;">Boya GAHIE (Fondateur)</h5>
+                    <p class="text-muted mb-3">
+                        <i class="fa fa-map-marker-alt"></i> Abidjan, Côte d'Ivoire
+                    </p>
+                    <p class="small text-muted">
+                        Passionné par la mode africaine et l'entrepreneuriat, Boya a créé AfriBoyStyle pour donner une visibilité mondiale aux créateurs africains.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pourquoi nous choisir -->
+<section class="bg-pattern py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="mb-4" style="color: #8B4513;">
+                    <i class="fa fa-question-circle"></i> Pourquoi AfriBoyStyle ?
+                </h2>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="card border-0 h-100">
+                            <div class="card-body">
+                                <h6 style="color: #D4A017;">
+                                    <i class="fa fa-check-circle"></i> Large Choix
+                                </h6>
+                                <p class="small text-muted mb-0">
+                                    Des centaines de produits uniques de créateurs talentueux
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card border-0 h-100">
+                            <div class="card-body">
+                                <h6 style="color: #D4A017;">
+                                    <i class="fa fa-truck"></i> Livraison Rapide
+                                </h6>
+                                <p class="small text-muted mb-0">
+                                    Expédition sous 48h partout en Afrique
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card border-0 h-100">
+                            <div class="card-body">
+                                <h6 style="color: #D4A017;">
+                                    <i class="fa fa-shield-alt"></i> Paiement Sécurisé
+                                </h6>
+                                <p class="small text-muted mb-0">
+                                    Transactions 100% sécurisées et cryptées
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card border-0 h-100">
+                            <div class="card-body">
+                                <h6 style="color: #D4A017;">
+                                    <i class="fa fa-headset"></i> Support 24/7
+                                </h6>
+                                <p class="small text-muted mb-0">
+                                    Une équipe à votre écoute tous les jours
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="container py-5 text-center">
+    <h2 class="mb-4" style="color: #8B4513;">Rejoignez l'aventure !</h2>
+    <p class="lead text-muted mb-4">
+        Que vous soyez client ou créateur, AfriBoyStyle vous accueille
+    </p>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="{% url 'catalogue' %}" class="btn btn-primary btn-lg">
+            <i class="fa fa-shopping-bag"></i> Découvrir la Boutique
+        </a>
+        <a href="{% url 'inscription_vendeur' %}" class="btn btn-outline-primary btn-lg">
+            <i class="fa fa-store"></i> Devenir Vendeur
+        </a>
+        <a href="{% url 'contact' %}" class="btn btn-outline-secondary btn-lg">
+            <i class="fa fa-envelope"></i> Nous Contacter
+        </a>
+    </div>
+</section>
+
+{% endblock %}

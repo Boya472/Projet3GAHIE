@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mes Commandes - Vendeur - AfriBoyStyle{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2"><i class="fa fa-shopping-cart"></i> Commandes de mes Produits</h1>
+        <a href="{% url 'dashboard_vendeur' %}" class="btn btn-outline-secondary">
+            <i class="fa fa-arrow-left"></i> Retour au Dashboard
+        </a>
+    </div>
+
+    {% if commandes_dict %}
+    <div class="row">
+        {% for commande_info in commandes_dict %}
+        {% with commande=commande_info.commande lignes=commande_info.lignes %}
+        <div class="col-12 mb-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>Commande #{{ commande.numero_commande }}</strong>
+                        <br>
+                        <small class="text-muted">{{ commande.date_commande|date:"d/m/Y à H:i" }}</small>
+                        <br>
+                        <small class="text-muted">
+                            <i class="fa fa-user"></i> {{ commande.client.user.get_full_name|default:commande.client.user.username }}
+                        </small>
+                    </div>
+                    <div>
+                        {% if commande.statut == 'en_attente' %}
+                            <span class="badge bg-warning text-dark">En attente</span>
+                        {% elif commande.statut == 'confirmee' %}
+                            <span class="badge bg-info">Confirmée</span>
+                        {% elif commande.statut == 'en_preparation' %}
+                            <span class="badge bg-primary">En préparation</span>
+                        {% elif commande.statut == 'expediee' %}
+                            <span class="badge bg-secondary">Expédiée</span>
+                        {% elif commande.statut == 'livree' %}
+                            <span class="badge bg-success">Livrée</span>
+                        {% elif commande.statut == 'annulee' %}
+                            <span class="badge bg-danger">Annulée</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h6 class="mb-3">Mes produits dans cette commande :</h6>
+                    
+                    {% for ligne in lignes %}
+                    <div class="row mb-3 pb-3 border-bottom">
+                        <div class="col-md-2">
+                            <img src="{{ ligne.produit.image_principale.url }}" class="img-thumbnail" alt="{{ ligne.produit.nom }}">
+                        </div>
+                        <div class="col-md-6">
+                            <h6>{{ ligne.produit.nom }}</h6>
+                            <p class="mb-1"><small>Quantité : {{ ligne.quantite }}</small></p>
+                            {% if ligne.taille %}
+                            <p class="mb-1"><small>Taille : {{ ligne.taille }}</small></p>
+                            {% endif %}
+                            <p class="mb-0"><strong>Prix unitaire : {{ ligne.prix_unitaire }} FCFA</strong></p>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <p class="mb-1"><strong>Sous-total : {{ ligne.sous_total }} FCFA</strong></p>
+                            <p class="text-muted small mb-0">
+                                Commission (10%) : {{ ligne.sous_total|floatformat:0|add:"0"|floatformat:0 }} FCFA
+                            </p>
+                            <p class="text-success mb-0">
+                                <strong>Votre gain : 
+                                    {% widthratio ligne.sous_total 100 90 %} FCFA
+                                </strong>
+                            </p>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <!-- Adresse de livraison -->
+                    <div class="mt-3">
+                        <h6><i class="fa fa-map-marker-alt"></i> Adresse de livraison :</h6>
+                        <p class="mb-0">
+                            {{ commande.adresse_livraison }}<br>
+                            {{ commande.ville }}{% if commande.code_postal %}, {{ commande.code_postal }}{% endif %}<br>
+                            <i class="fa fa-phone"></i> {{ commande.telephone_livraison }}
+                        </p>
+                    </div>
+                </div>
+                <div class="card-footer text-muted">
+                    <small>
+                        <i class="fa fa-credit-card"></i> Paiement : {{ commande.get_mode_paiement_display }}
+                        {% if commande.paiement_valide %}
+                            <span class="badge bg-success ms-2">Payé</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark ms-2">En attente</span>
+                        {% endif %}
+                    </small>
+                </div>
+            </div>
+        </div>
+        {% endwith %}
+        {% endfor %}
+    </div>
+
+    <!-- Résumé financier -->
+    <div class="card">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0"><i class="fa fa-chart-line"></i> Résumé Financier</h5>
+        </div>
+        <div class="card-body">
+            <div class="row text-center">
+                <div class="col-md-3">
+                    <h4 class="text-primary">{{ commandes_dict|length }}</h4>
+                    <p class="text-muted">Commandes</p>
+                </div>
+                <div class="col-md-3">
+                    <h4 class="text-info">
+                        {% for c in commandes_dict %}
+                            {% for l in c.lignes %}{{ l.quantite }}{% if not forloop.last %}+{% endif %}{% endfor %}
+                        {% endfor %}
+                    </h4>
+                    <p class="text-muted">Articles vendus</p>
+                </div>
+                <div class="col-md-3">
+                    <h4 class="text-warning">À calculer</h4>
+                    <p class="text-muted">Revenu brut</p>
+                </div>
+                <div class="col-md-3">
+                    <h4 class="text-success">À calculer</h4>
+                    <p class="text-muted">Votre gain net</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <!-- Aucune commande -->
+    <div class="text-center py-5">
+        <i class="fa fa-shopping-cart fa-5x text-muted mb-4"></i>
+        <h3>Aucune commande pour vos produits</h3>
+        <p class="text-muted">Vos produits n'ont pas encore été commandés.</p>
+        <a href="{% url 'liste_produits_vendeur' %}" class="btn btn-primary btn-lg mt-3">
+            <i class="fa fa-box"></i> Gérer mes produits
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

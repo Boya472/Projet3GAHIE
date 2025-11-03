@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mes Avis - AfriBoyStyle{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <h1 class="mb-4"><i class="fa fa-star"></i> Mes Avis</h1>
+
+    {% if avis %}
+    <div class="row">
+        {% for avis_item in avis %}
+        <div class="col-12 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Image produit -->
+                        <div class="col-md-2">
+                            <a href="{% url 'detail_produit' slug=avis_item.produit.slug %}">
+                                <img src="{{ avis_item.produit.image_principale.url }}" class="img-fluid rounded" alt="{{ avis_item.produit.nom }}">
+                            </a>
+                        </div>
+
+                        <!-- Détails avis -->
+                        <div class="col-md-7">
+                            <h5>
+                                <a href="{% url 'detail_produit' slug=avis_item.produit.slug %}" class="text-decoration-none text-dark">
+                                    {{ avis_item.produit.nom }}
+                                </a>
+                            </h5>
+                            <p class="text-muted small mb-2">
+                                <i class="fa fa-store"></i> {{ avis_item.produit.vendeur.nom_boutique }}
+                            </p>
+
+                            <!-- Étoiles -->
+                            <div class="mb-2">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= avis_item.note %}
+                                        <i class="fa fa-star text-warning"></i>
+                                    {% else %}
+                                        <i class="fa fa-star text-muted"></i>
+                                    {% endif %}
+                                {% endfor %}
+                                <span class="ms-2">{{ avis_item.note }}/5</span>
+                            </div>
+
+                            <!-- Commentaire -->
+                            <p class="mb-2">{{ avis_item.commentaire }}</p>
+
+                            <!-- Date et statut -->
+                            <p class="text-muted small mb-0">
+                                <i class="fa fa-calendar"></i> {{ avis_item.date_publication|date:"d/m/Y à H:i" }}
+                                {% if avis_item.date_modification != avis_item.date_publication %}
+                                    <span class="text-info">(Modifié)</span>
+                                {% endif %}
+                            </p>
+                        </div>
+
+                        <!-- Statut et actions -->
+                        <div class="col-md-3 text-end">
+                            <!-- Badge statut -->
+                            <div class="mb-3">
+                                {% if avis_item.statut == 'approuve' %}
+                                    <span class="badge bg-success">Publié</span>
+                                {% elif avis_item.statut == 'en_attente' %}
+                                    <span class="badge bg-warning text-dark">En attente</span>
+                                {% elif avis_item.statut == 'refuse' %}
+                                    <span class="badge bg-danger">Refusé</span>
+                                {% endif %}
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="btn-group-vertical w-100" role="group">
+                                <a href="{% url 'modifier_avis' avis_item.id %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fa fa-edit"></i> Modifier
+                                </a>
+                                <a href="{% url 'supprimer_avis' avis_item.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet avis ?')">
+                                    <i class="fa fa-trash"></i> Supprimer
+                                </a>
+                                <a href="{% url 'detail_produit' slug=avis_item.produit.slug %}" class="btn btn-sm btn-outline-secondary">
+                                    <i class="fa fa-eye"></i> Voir le produit
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Réponse du vendeur -->
+                    {% if avis_item.reponse %}
+                    <hr>
+                    <div class="alert alert-light mb-0">
+                        <h6 class="mb-2"><i class="fa fa-reply"></i> Réponse du vendeur :</h6>
+                        <p class="mb-1">{{ avis_item.reponse.contenu }}</p>
+                        <small class="text-muted">{{ avis_item.reponse.date_reponse|date:"d/m/Y à H:i" }}</small>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Statistiques -->
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title"><i class="fa fa-chart-bar"></i> Mes Statistiques</h5>
+            <div class="row text-center">
+                <div class="col-md-3">
+                    <h3 class="text-primary">{{ avis.count }}</h3>
+                    <p class="text-muted">Avis laissés</p>
+                </div>
+                <div class="col-md-3">
+                    <h3 class="text-success">{{ avis|length }}</h3>
+                    <p class="text-muted">Total</p>
+                </div>
+                <div class="col-md-3">
+                    <h3 class="text-warning">
+                        {% with avis|length as total %}
+                        {% if total > 0 %}
+                            {{ avis.filter|length }}
+                        {% else %}
+                            0
+                        {% endif %}
+                        {% endwith %}
+                    </h3>
+                    <p class="text-muted">En attente</p>
+                </div>
+                <div class="col-md-3">
+                    <h3 class="text-info">
+                        {% widthratio avis.aggregate.note__avg 1 5 %}
+                    </h3>
+                    <p class="text-muted">Note moyenne</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <!-- Aucun avis -->
+    <div class="text-center py-5">
+        <i class="fa fa-comment-slash fa-5x text-muted mb-4"></i>
+        <h3>Vous n'avez pas encore laissé d'avis</h3>
+        <p class="text-muted">Partagez votre expérience sur les produits que vous avez achetés !</p>
+        <a href="{% url 'mes_commandes' %}" class="btn btn-primary btn-lg mt-3">
+            <i class="fa fa-shopping-bag"></i> Voir mes commandes
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

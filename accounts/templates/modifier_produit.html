@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Modifier {{ produit.nom }} - AfriBoyStyle{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h2"><i class="fa fa-edit"></i> Modifier le Produit</h1>
+                <a href="{% url 'liste_produits_vendeur' %}" class="btn btn-outline-secondary">
+                    <i class="fa fa-arrow-left"></i> Retour
+                </a>
+            </div>
+
+            <div class="card">
+                <div class="card-body p-4">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <h5 class="mb-3">Informations de base</h5>
+                        
+                        <div class="mb-3">
+                            <label for="nom" class="form-label">Nom du produit *</label>
+                            <input type="text" class="form-control" id="nom" name="nom" value="{{ produit.nom }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description *</label>
+                            <textarea class="form-control" id="description" name="description" rows="5" required>{{ produit.description }}</textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="prix" class="form-label">Prix (FCFA) *</label>
+                                <input type="number" class="form-control" id="prix" name="prix" value="{{ produit.prix }}" min="0" step="1" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="stock" class="form-label">Stock disponible *</label>
+                                <input type="number" class="form-control" id="stock" name="stock" value="{{ produit.stock }}" min="0" required>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <h5 class="mb-3">Catégorisation</h5>
+
+                        <div class="mb-3">
+                            <label for="categorie" class="form-label">Catégorie *</label>
+                            <select class="form-select" id="categorie" name="categorie" required>
+                                {% for cat in categories %}
+                                <option value="{{ cat.id }}" {% if cat.id == produit.categorie.id %}selected{% endif %}>{{ cat.nom }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Étiquettes/Styles</label>
+                            <div class="row">
+                                {% for etiquette in etiquettes %}
+                                <div class="col-md-4 col-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="etiquettes" value="{{ etiquette.id }}" id="etiq{{ etiquette.id }}" 
+                                        {% if etiquette in produit.etiquettes.all %}checked{% endif %}>
+                                        <label class="form-check-label" for="etiq{{ etiquette.id }}">
+                                            {{ etiquette.nom }}
+                                        </label>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <h5 class="mb-3">Tailles disponibles</h5>
+                        
+                        <div class="mb-3">
+                            <div class="row">
+                                {% for taille in tailles_choices %}
+                                <div class="col-md-2 col-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="tailles" value="{{ taille }}" id="taille{{ taille }}"
+                                        {% if taille in produit.tailles_disponibles %}checked{% endif %}>
+                                        <label class="form-check-label" for="taille{{ taille }}">
+                                            {{ taille }}
+                                        </label>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <h5 class="mb-3">Images</h5>
+
+                        <!-- Image principale actuelle -->
+                        <div class="mb-3">
+                            <label class="form-label">Image principale actuelle</label>
+                            <div class="mb-2">
+                                <img src="{{ produit.image_principale.url }}" class="img-thumbnail" style="max-width: 200px;" alt="{{ produit.nom }}">
+                            </div>
+                            <label for="image_principale" class="form-label">Remplacer l'image principale (optionnel)</label>
+                            <input class="form-control" type="file" id="image_principale" name="image_principale" accept="image/*">
+                        </div>
+
+                        <!-- Images supplémentaires actuelles -->
+                        {% if images_supplementaires %}
+                        <div class="mb-3">
+                            <label class="form-label">Images supplémentaires actuelles</label>
+                            <div class="row">
+                                {% for img in images_supplementaires %}
+                                <div class="col-md-3 mb-2">
+                                    <div class="position-relative">
+                                        <img src="{{ img.image.url }}" class="img-thumbnail" alt="Image {{ forloop.counter }}">
+                                        <a href="{% url 'supprimer_image_produit' img.id %}" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1" onclick="return confirm('Supprimer cette image ?')">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <div class="mb-3">
+                            <label for="images_supplementaires" class="form-label">Ajouter de nouvelles images</label>
+                            <input class="form-control" type="file" id="images_supplementaires" name="images_supplementaires" accept="image/*" multiple>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'liste_produits_vendeur' %}" class="btn btn-outline-secondary btn-lg">
+                                Annuler
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fa fa-save"></i> Enregistrer les modifications
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

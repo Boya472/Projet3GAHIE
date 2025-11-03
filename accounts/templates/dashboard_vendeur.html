@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard Vendeur - AfriBoyStyle{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <h1 class="mb-4"><i class="fa fa-store"></i> Dashboard Vendeur</h1>
+
+    <!-- Validation en attente -->
+    {% if not vendeur.statut_validation %}
+    <div class="alert alert-warning">
+        <i class="fa fa-exclamation-triangle"></i> 
+        <strong>Compte en attente de validation</strong><br>
+        Votre compte sera validé par un administrateur avant que vous puissiez publier des produits. Vous recevrez un email de confirmation.
+    </div>
+    {% endif %}
+
+    <!-- Statistiques -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2">Total Produits</h6>
+                    <h2 class="card-title mb-0">{{ total_produits }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2">Produits Publiés</h6>
+                    <h2 class="card-title mb-0">{{ produits_publies }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2">En Attente</h6>
+                    <h2 class="card-title mb-0">{{ produits_en_attente }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2">Total Ventes</h6>
+                    <h2 class="card-title mb-0">{{ vendeur.total_ventes }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Informations Boutique -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fa fa-info-circle"></i> Informations de la Boutique</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Nom de la boutique:</strong> {{ vendeur.nom_boutique }}</p>
+                    <p><strong>Description:</strong><br>{{ vendeur.description_boutique|default:"Non renseignée" }}</p>
+                    <p><strong>Commission:</strong> {{ vendeur.commission_taux }}%</p>
+                    <p><strong>Statut:</strong> 
+                        {% if vendeur.statut_validation %}
+                            <span class="badge bg-success">Validé</span>
+                        {% else %}
+                            <span class="badge bg-warning">En attente</span>
+                        {% endif %}
+                    </p>
+                    <a href="{% url 'modifier_profil' %}" class="btn btn-outline-primary">
+                        <i class="fa fa-edit"></i> Modifier
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions Rapides -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fa fa-bolt"></i> Actions Rapides</h5>
+                </div>
+                <div class="card-body">
+                    {% if vendeur.statut_validation %}
+                    <a href="{% url 'ajouter_produit' %}" class="btn btn-success btn-lg w-100 mb-3">
+                        <i class="fa fa-plus-circle"></i> Ajouter un Produit
+                    </a>
+                    {% else %}
+                    <button class="btn btn-secondary btn-lg w-100 mb-3" disabled>
+                        <i class="fa fa-lock"></i> Ajouter un Produit (Compte non validé)
+                    </button>
+                    {% endif %}
+                    
+                    <a href="{% url 'liste_produits_vendeur' %}" class="btn btn-outline-primary w-100 mb-2">
+                        <i class="fa fa-box"></i> Gérer mes Produits
+                    </a>
+                    <a href="{% url 'commandes_vendeur' %}" class="btn btn-outline-info w-100 mb-2">
+                        <i class="fa fa-shopping-cart"></i> Voir les Commandes
+                    </a>
+                    <a href="{% url 'statistiques_vendeur' %}" class="btn btn-outline-secondary w-100">
+                        <i class="fa fa-chart-line"></i> Statistiques
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Derniers Produits -->
+    <div class="card">
+        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="fa fa-box-open"></i> Derniers Produits</h5>
+            <a href="#" class="btn btn-sm btn-primary">Voir tous</a>
+        </div>
+        <div class="card-body">
+            {% if derniers_produits %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Nom</th>
+                            <th>Prix</th>
+                            <th>Stock</th>
+                            <th>Statut</th>
+                            <th>Vues</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for produit in derniers_produits %}
+                        <tr>
+                            <td>
+                                <img src="{{ produit.image_principale.url }}" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;" alt="{{ produit.nom }}">
+                            </td>
+                            <td>{{ produit.nom|truncatewords:5 }}</td>
+                            <td>{{ produit.prix }} FCFA</td>
+                            <td>
+                                {% if produit.stock > 0 %}
+                                    <span class="badge bg-success">{{ produit.stock }}</span>
+                                {% else %}
+                                    <span class="badge bg-danger">0</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if produit.statut == 'publie' %}
+                                    <span class="badge bg-success">Publié</span>
+                                {% elif produit.statut == 'en_attente' %}
+                                    <span class="badge bg-warning">En attente</span>
+                                {% elif produit.statut == 'refuse' %}
+                                    <span class="badge bg-danger">Refusé</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">{{ produit.get_statut_display }}</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ produit.vues }}</td>
+                            <td>
+                                <a href="{% url 'detail_produit' slug=produit.slug %}" class="btn btn-sm btn-outline-primary" title="Voir">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a href="#" class="btn btn-sm btn-outline-secondary" title="Modifier">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-4">
+                <i class="fa fa-box-open fa-3x text-muted mb-3"></i>
+                <p class="text-muted">Vous n'avez pas encore de produits.</p>
+                {% if vendeur.statut_validation %}
+                <a href="#" class="btn btn-success">
+                    <i class="fa fa-plus-circle"></i> Ajouter votre premier produit
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

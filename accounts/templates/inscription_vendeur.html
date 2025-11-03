@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Inscription Vendeur - AfriBoyStyle{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="card shadow">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <h2 class="h3">Devenir Vendeur</h2>
+                        <p class="text-muted">Créez votre boutique sur AfriBoyStyle et vendez vos créations</p>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <!-- Informations Personnelles -->
+                        <h5 class="mb-3"><i class="fa fa-user"></i> Informations Personnelles</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="first_name" class="form-label">Prénom *</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="last_name" class="form-label">Nom *</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="username" class="form-label">Nom d'utilisateur *</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email *</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="telephone" class="form-label">Téléphone *</label>
+                            <input type="tel" class="form-control" id="telephone" name="telephone" placeholder="+225 XX XX XX XX" required>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="password" class="form-label">Mot de passe *</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="password2" class="form-label">Confirmer le mot de passe *</label>
+                                <input type="password" class="form-control" id="password2" name="password2" required>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Informations Boutique -->
+                        <h5 class="mb-3"><i class="fa fa-store"></i> Informations de la Boutique</h5>
+
+                        <div class="mb-3">
+                            <label for="nom_boutique" class="form-label">Nom de votre boutique *</label>
+                            <input type="text" class="form-control" id="nom_boutique" name="nom_boutique" required>
+                            <small class="text-muted">Ce nom sera visible par tous les clients</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description_boutique" class="form-label">Description de votre boutique</label>
+                            <textarea class="form-control" id="description_boutique" name="description_boutique" rows="4" placeholder="Décrivez vos produits, votre style, votre histoire..."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="coordonnees_paiement" class="form-label">Coordonnées de paiement *</label>
+                            <textarea class="form-control" id="coordonnees_paiement" name="coordonnees_paiement" rows="3" placeholder="Mobile Money (Orange, MTN, Moov), Numéro de compte bancaire, etc." required></textarea>
+                            <small class="text-muted">Ces informations serviront à vous reverser vos gains</small>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <i class="fa fa-info-circle"></i> 
+                            <strong>À savoir :</strong> Une commission de <strong>10%</strong> est prélevée sur chaque vente. Votre compte sera validé par un administrateur avant que vous puissiez publier des produits.
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="terms" required>
+                            <label class="form-check-label" for="terms">
+                                J'accepte les <a href="#">conditions générales de vente</a> et la <a href="#">politique de confidentialité</a>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100 btn-lg">
+                            <i class="fa fa-store"></i> Créer ma boutique
+                        </button>
+                    </form>
+
+                    <hr class="my-4">
+
+                    <div class="text-center">
+                        <p class="mb-0">Vous avez déjà un compte ? <a href="{% url 'connexion' %}">Se connecter</a></p>
+                        <p class="mt-2">Vous êtes un client ? <a href="{% url 'inscription_client' %}">Inscription Client</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Laisser un avis - {{ produit.nom }} - AfriBoyStyle{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h2"><i class="fa fa-star"></i> Laisser un avis</h1>
+                <a href="{% url 'detail_produit' slug=produit.slug %}" class="btn btn-outline-secondary">
+                    <i class="fa fa-arrow-left"></i> Retour au produit
+                </a>
+            </div>
+
+            <!-- Produit concerné -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <img src="{{ produit.image_principale.url }}" class="img-fluid rounded" alt="{{ produit.nom }}">
+                        </div>
+                        <div class="col-md-9">
+                            <h4>{{ produit.nom }}</h4>
+                            <p class="text-muted mb-1">
+                                <i class="fa fa-store"></i> {{ produit.vendeur.nom_boutique }}
+                            </p>
+                            <p class="mb-0">
+                                <strong>{{ produit.prix }} FCFA</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulaire d'avis -->
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                        {% if avis_existant %}
+                            <i class="fa fa-edit"></i> Modifier votre avis
+                        {% else %}
+                            <i class="fa fa-comment"></i> Votre avis
+                        {% endif %}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if avis_existant %}
+                    <div class="alert alert-info">
+                        <i class="fa fa-info-circle"></i> Vous avez déjà laissé un avis pour ce produit. Vous pouvez le modifier ci-dessous.
+                    </div>
+                    {% endif %}
+
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <!-- Note par étoiles -->
+                        <div class="mb-4">
+                            <label class="form-label">Note * (cliquez sur les étoiles)</label>
+                            <div class="rating-stars">
+                                <input type="radio" name="note" value="5" id="star5" {% if avis_existant.note == 5 %}checked{% endif %} required>
+                                <label for="star5" class="star">
+                                    <i class="fa fa-star"></i>
+                                </label>
+                                
+                                <input type="radio" name="note" value="4" id="star4" {% if avis_existant.note == 4 %}checked{% endif %}>
+                                <label for="star4" class="star">
+                                    <i class="fa fa-star"></i>
+                                </label>
+                                
+                                <input type="radio" name="note" value="3" id="star3" {% if avis_existant.note == 3 %}checked{% endif %}>
+                                <label for="star3" class="star">
+                                    <i class="fa fa-star"></i>
+                                </label>
+                                
+                                <input type="radio" name="note" value="2" id="star2" {% if avis_existant.note == 2 %}checked{% endif %}>
+                                <label for="star2" class="star">
+                                    <i class="fa fa-star"></i>
+                                </label>
+                                
+                                <input type="radio" name="note" value="1" id="star1" {% if avis_existant.note == 1 %}checked{% endif %}>
+                                <label for="star1" class="star">
+                                    <i class="fa fa-star"></i>
+                                </label>
+                            </div>
+                            <small class="text-muted">1 = Très mauvais, 5 = Excellent</small>
+                        </div>
+
+                        <!-- Commentaire -->
+                        <div class="mb-4">
+                            <label for="commentaire" class="form-label">Votre commentaire *</label>
+                            <textarea class="form-control" id="commentaire" name="commentaire" rows="6" required placeholder="Partagez votre expérience avec ce produit...">{% if avis_existant %}{{ avis_existant.commentaire }}{% endif %}</textarea>
+                            <small class="text-muted">Minimum 20 caractères</small>
+                        </div>
+
+                        <!-- Conseils -->
+                        <div class="alert alert-warning">
+                            <h6><i class="fa fa-lightbulb"></i> Conseils pour un bon avis :</h6>
+                            <ul class="mb-0 small">
+                                <li>Soyez honnête et précis</li>
+                                <li>Mentionnez la qualité du produit, la taille, les couleurs</li>
+                                <li>Parlez de votre expérience globale</li>
+                                <li>Restez respectueux envers le vendeur</li>
+                            </ul>
+                        </div>
+
+                        <!-- Information modération -->
+                        <div class="alert alert-info">
+                            <i class="fa fa-shield-alt"></i> 
+                            <strong>Modération :</strong> Votre avis sera vérifié avant publication pour garantir sa conformité avec nos règles.
+                        </div>
+
+                        <!-- Boutons -->
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'detail_produit' slug=produit.slug %}" class="btn btn-outline-secondary btn-lg">
+                                Annuler
+                            </a>
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fa fa-paper-plane"></i> 
+                                {% if avis_existant %}Modifier mon avis{% else %}Publier mon avis{% endif %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Style pour les étoiles */
+.rating-stars {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 5px;
+    font-size: 2.5rem;
+}
+
+.rating-stars input[type="radio"] {
+    display: none;
+}
+
+.rating-stars label {
+    cursor: pointer;
+    color: #ddd;
+    transition: color 0.3s ease;
+}
+
+.rating-stars input[type="radio"]:checked ~ label,
+.rating-stars label:hover,
+.rating-stars label:hover ~ label {
+    color: #FFD700;
+}
+
+.rating-stars input[type="radio"]:checked + label {
+    color: #FFD700;
+}
+</style>
+
+{% endblock %}

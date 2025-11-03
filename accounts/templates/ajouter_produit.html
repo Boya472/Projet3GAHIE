@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ajouter un Produit - AfriBoyStyle{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h2"><i class="fa fa-plus-circle"></i> Ajouter un Produit</h1>
+                <a href="{% url 'liste_produits_vendeur' %}" class="btn btn-outline-secondary">
+                    <i class="fa fa-arrow-left"></i> Retour à la liste
+                </a>
+            </div>
+
+            <div class="card">
+                <div class="card-body p-4">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Informations de base -->
+                        <h5 class="mb-3"><i class="fa fa-info-circle"></i> Informations de base</h5>
+                        
+                        <div class="mb-3">
+                            <label for="nom" class="form-label">Nom du produit *</label>
+                            <input type="text" class="form-control" id="nom" name="nom" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description *</label>
+                            <textarea class="form-control" id="description" name="description" rows="5" required placeholder="Décrivez votre produit en détail..."></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="prix" class="form-label">Prix (FCFA) *</label>
+                                <input type="number" class="form-control" id="prix" name="prix" min="0" step="1" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="stock" class="form-label">Stock disponible *</label>
+                                <input type="number" class="form-control" id="stock" name="stock" min="0" required>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Catégorisation -->
+                        <h5 class="mb-3"><i class="fa fa-tags"></i> Catégorisation</h5>
+
+                        <div class="mb-3">
+                            <label for="categorie" class="form-label">Catégorie *</label>
+                            <select class="form-select" id="categorie" name="categorie" required>
+                                <option value="">Choisir une catégorie</option>
+                                {% for cat in categories %}
+                                <option value="{{ cat.id }}">{{ cat.nom }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Étiquettes/Styles</label>
+                            <div class="row">
+                                {% for etiquette in etiquettes %}
+                                <div class="col-md-4 col-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="etiquettes" value="{{ etiquette.id }}" id="etiq{{ etiquette.id }}">
+                                        <label class="form-check-label" for="etiq{{ etiquette.id }}">
+                                            {{ etiquette.nom }}
+                                        </label>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Tailles -->
+                        <h5 class="mb-3"><i class="fa fa-ruler"></i> Tailles disponibles</h5>
+                        
+                        <div class="mb-3">
+                            <div class="row">
+                                {% for taille in tailles_choices %}
+                                <div class="col-md-2 col-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="tailles" value="{{ taille }}" id="taille{{ taille }}">
+                                        <label class="form-check-label" for="taille{{ taille }}">
+                                            {{ taille }}
+                                        </label>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Images -->
+                        <h5 class="mb-3"><i class="fa fa-images"></i> Images</h5>
+
+                        <div class="mb-3">
+                            <label for="image_principale" class="form-label">Image principale * (obligatoire)</label>
+                            <input class="form-control" type="file" id="image_principale" name="image_principale" accept="image/*" required>
+                            <small class="text-muted">Format recommandé : JPG, PNG. Taille max : 5 MB</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="images_supplementaires" class="form-label">Images supplémentaires (optionnel)</label>
+                            <input class="form-control" type="file" id="images_supplementaires" name="images_supplementaires" accept="image/*" multiple>
+                            <small class="text-muted">Vous pouvez ajouter jusqu'à 5 images supplémentaires</small>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="alert alert-info">
+                            <i class="fa fa-info-circle"></i> 
+                            <strong>À savoir :</strong> Votre produit sera soumis à modération avant d'être publié sur le site. Une commission de <strong>10%</strong> sera prélevée sur chaque vente.
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'liste_produits_vendeur' %}" class="btn btn-outline-secondary btn-lg">
+                                Annuler
+                            </a>
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fa fa-check"></i> Ajouter le produit
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

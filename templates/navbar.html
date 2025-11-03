@@ -1,0 +1,161 @@
+{% load static %}
+
+<!-- Header -->
+<nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
+    <div class="container text-light">
+        <div class="w-100 d-flex justify-content-between">
+            <div>
+                <i class="fa fa-envelope mx-2"></i>
+                <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:contact@afriboystyle.com">contact@afriboystyle.com</a>
+                <i class="fa fa-phone mx-2"></i>
+                <a class="navbar-sm-brand text-light text-decoration-none" href="tel:+225-86-11-19-01">+225 05 86 11 19 01</a>
+            </div>
+            <div>
+                <a class="text-light" href="https://fb.com/" target="_blank" rel="sponsored"><i class="fab fa-facebook-f fa-sm fa-fw me-2"></i></a>
+                <a class="text-light" href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram fa-sm fa-fw me-2"></i></a>
+                <a class="text-light" href="https://twitter.com/" target="_blank"><i class="fab fa-twitter fa-sm fa-fw me-2"></i></a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Close Header -->
+
+<!-- Main Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light shadow">
+    <div class="container d-flex justify-content-between align-items-center">
+
+        <!-- Logo -->
+    <a class="navbar-brand text-success logo h1 align-self-center" href="{% url 'home' %}">
+        <img src="{% static 'img/logo.png' %}" alt="AfriBoyStyle" style="height: 50px; width: auto;">
+     </a>
+
+
+        <!-- Toggle Button Mobile -->
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Menu Items -->
+        <div class="align-self-center collapse navbar-collapse flex-fill d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+            <div class="flex-fill">
+                <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'catalogue' %}">Boutique</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            Catégories
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'catalogue' %}?categorie=vetements-homme">Vêtements Homme</a></li>
+                            <li><a class="dropdown-item" href="{% url 'catalogue' %}?categorie=vetements-femme">Vêtements Femme</a></li>
+                            <li><a class="dropdown-item" href="{% url 'catalogue' %}?categorie=vetements-enfant">Vêtements Enfant</a></li>
+                            <li><a class="dropdown-item" href="{% url 'catalogue' %}?categorie=sacs">Sacs</a></li>
+                            <li><a class="dropdown-item" href="{% url 'catalogue' %}?categorie=chaussures">Chaussures</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">A Propos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                    </li>
+                    
+                    {% if user.is_authenticated %}
+                        {% if user.role == 'vendeur' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'dashboard_vendeur' %}">Dashboard Vendeur</a>
+                        </li>
+                        {% endif %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fa fa-user"></i> {{ user.username }}
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'profil' %}">Mon Profil</a></li>
+                                {% if user.role == 'client' %}
+                                <li><a class="dropdown-item" href="{% url 'mes_commandes' %}">Mes Commandes</a></li>
+                                <li><a class="dropdown-item" href="{% url 'mes_avis' %}">Mes Avis</a></li>
+                                {% endif %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'deconnexion' %}">Déconnexion</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fa fa-user"></i> Connexion
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'connexion' %}">Se connecter</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'inscription_client' %}">S'inscrire (Client)</a></li>
+                                <li><a class="dropdown-item" href="{% url 'inscription_vendeur' %}">S'inscrire (Vendeur)</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <!-- Search & Cart -->
+            <div class="navbar align-self-center d-flex">
+                <!-- Search Icon -->
+                <a class="nav-icon position-relative text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#searchModal">
+                    <i class="fa fa-fw fa-search text-dark mr-2"></i>
+                </a>
+                
+                <!-- Cart Icon -->
+                <a class="nav-icon position-relative text-decoration-none" href="{% url 'voir_panier' %}">
+                    <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
+                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-success text-white" id="cart-count">
+                        0
+                    </span>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</nav>
+<!-- Close Main Navbar -->
+
+<!-- Modal de Recherche -->
+<div class="modal fade" id="searchModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Rechercher un produit</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'recherche' %}" method="get">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Nom du produit, catégorie, vendeur...">
+                        <button class="btn btn-success" type="submit">
+                            <i class="fa fa-search"></i> Rechercher
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script pour mettre à jour le nombre d'articles dans le panier -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    updateCartCount();
+});
+
+function updateCartCount() {
+    fetch("{% url 'nombre_items_panier' %}")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('cart-count').textContent = data.nombre_items;
+        })
+        .catch(error => console.error('Erreur:', error));
+}
+</script>
