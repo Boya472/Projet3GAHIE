@@ -2,7 +2,6 @@
 {
   "model": "sessions.session",
   "pk": "9ccc8uusrfqxrrtwso56sw8h02rwodvt",
-  
   "fields": {
     "session_data": "e30:1wuRxO:l0TAUgL6oTBwYnaHV2YEk2xGf9HFMNR-EM-zaIYe-no",
     "expire_date": "2026-08-27T09:42:38.328Z"
@@ -89,9 +88,9 @@
   "model": "products.categorie",
   "pk": 1,
   "fields": {
-    "nom": "V�tements Femme",
+    "nom": "Vêtements Femme",
     "slug": "vetements-femme",
-    "description": "Robe longue �l�gante en v�ritable tissu Wax aux motifs vibrants. Une coupe moderne qui sublime la silhouette avec une touche d'�l�gance africaine authentique",
+    "description": "Robe longue elogante en veritable tissu Wax aux motifs vibrants. Une coupe moderne qui sublime la silhouette avec une touche d'�l�gance africaine authentique",
     "image": "categories/femc.jpg",
     "ordre": 2
   }
@@ -100,9 +99,9 @@
   "model": "products.categorie",
   "pk": 2,
   "fields": {
-    "nom": "V�tements Homme",
+    "nom": "Vêtements Homme",
     "slug": "vetements-homme",
-    "description": "Chemise tendance avec empi�cements en Wax sur col et poignets. L'alliance parfaite entre �l�gance professionnelle et identit� culturelle",
+    "description": "Chemise tendance avec empiecements en Wax sur col et poignets. L'alliance parfaite entre élégance professionnelle et identité culturelle",
     "image": "categories/homc.jpg",
     "ordre": 3
   }
@@ -111,9 +110,9 @@
   "model": "products.categorie",
   "pk": 3,
   "fields": {
-    "nom": "V�tements Enfant",
+    "nom": "Vêtements Enfant",
     "slug": "vetements-enfant",
-    "description": "Petite robe en coton imprim� Wax �clatant, l�g�re et respirante. Con�ue pour offrir une totale libert� de mouvement � vos princesses",
+    "description": "Petite robe en coton imprimé Wax éclatant, légére et respirante. Conçue pour offrir une totale liberté de mouvement a vos princesses",
     "image": "categories/catEnf.jpg",
     "ordre": 3
   }
@@ -124,7 +123,7 @@
   "fields": {
     "nom": "Chaussures",
     "slug": "chaussures",
-    "description": "andales fines en cuir v�ritable tress� avec des touches de tissu traditionnel. �l�gance et confort assur�s pour habiller vos pieds.",
+    "description": "andales fines en cuir véritable tressé avec des touches de tissu traditionnel. élégance et confort assurés pour habiller vos pieds.",
     "image": "categories/catchau.jpg",
     "ordre": 2
   }
@@ -135,7 +134,7 @@
   "fields": {
     "nom": "Sacs",
     "slug": "sacs",
-    "description": "Sac cabas fait main combinant cuir de qualit� et motifs Bogolan/Wax. Spacieux et robuste, c'est l'accessoire afro-chic indispensable",
+    "description": "Sac cabas fait main combinant cuir de qualité et motifs Bogolan/Wax. Spacieux et robuste, c'est l'accessoire afro-chic indispensable",
     "image": "categories/catSac.jpg",
     "ordre": 3
   }
@@ -172,9 +171,9 @@
   "pk": 1,
   "fields": {
     "vendeur": 1,
-    "nom": "Robe Sir�ne",
+    "nom": "Robe Sirène",
     "slug": "robe-sirene",
-    "description": "Robe longue ajust�e en v�ritable tissu Wax aux motifs dor�s. Une coupe sir�ne �l�gante qui sublime la silhouette, parfaite pour vos soir�es et grands �v�nements.",
+    "description": "Robe longue ajustae en varitable tissu Wax aux motifs doras. Une coupe sirène élégante qui sublime la silhouette, parfaite pour vos soirées et grands évènements.",
     "prix": "35000.00",
     "categorie": 1,
     "stock": 13,
@@ -201,7 +200,7 @@
     "vendeur": 1,
     "nom": "Ensemble Kimono & Pantalon Fluid",
     "slug": "ensemble-kimono-pantalon-fluid",
-    "description": "Ensemble chic mariant un kimono en Pagne Tiss� et un pantalon fluide. Une tenue moderne et d�contract�e pour un look afro-contemporain affirm�",
+    "description": "Ensemble chic mariant un kimono en Pagne Tissu et un pantalon fluide. Une tenue moderne et décontractée pour un look afro-contemporain affirmé",
     "prix": "150000.00",
     "categorie": 1,
     "stock": 7,
@@ -227,7 +226,7 @@
     "vendeur": 1,
     "nom": "Sac Cabas Cuir",
     "slug": "sac-cabas-cuir",
-    "description": "Sac � main spacieux fait main combinant cuir v�ritable et toile Bogolan. R�sistant et �l�gant pour emporter tous vos essentiels au quotidien",
+    "description": "Sac a main spacieux fait main combinant cuir véritable et toile Bogolan. Résistant et élégant pour emporter tous vos essentiels au quotidien",
     "prix": "30000.00",
     "categorie": 5,
     "stock": 9,
@@ -250,9 +249,9 @@
   "pk": 4,
   "fields": {
     "vendeur": 1,
-    "nom": "Petite Robe �vas�e",
+    "nom": "Petite Robe évasée",
     "slug": "petite-robe-evasee",
-    "description": "Charmante petite robe en coton imprim� Wax �clatant, l�g�re et respirante. Offre une totale libert� de mouvement pour accompagner vos enfants au quotidien",
+    "description": "Charmante petite robe en coton imprimé Wax éclatant, légère et respirante. Offre une totale liberté de mouvement pour accompagner vos enfants au quotidien",
     "prix": "15000.00",
     "categorie": 3,
     "stock": 16,
@@ -260,7 +259,7 @@
       "XS",
       "S"
     ],
-    "image_principale": "produits/ENF3.jpg",
+    "image_principale": "produits/enf.jpg",
     "statut": "publie",
     "visibilite": true,
     "date_ajout": "2026-08-13T11:25:38.029Z",
@@ -285,7 +284,7 @@
     "tailles_disponibles": [
       "S"
     ],
-    "image_principale": "produits/CHAUSS2_j6dMiCT.jpg",
+    "image_principale": "produits/chausse2.jpg",
     "statut": "publie",
     "visibilite": true,
     "date_ajout": "2026-08-13T11:27:13.890Z",
@@ -331,7 +330,7 @@
   "pk": 4,
   "fields": {
     "produit": 4,
-    "image": "produits/galerie/ENF1.jpg",
+    "image": "produits/galerie/enf1.jpg",
     "ordre": 0,
     "date_ajout": "2026-08-13T11:25:38.033Z"
   }
@@ -423,7 +422,7 @@
       "categorie"
     ],
     "object_id": "1",
-    "object_repr": "V�tements Femme",
+    "object_repr": "Vêtements Femme",
     "action_flag": 1,
     "change_message": "[{\"added\": {}}]"
   }
@@ -441,7 +440,7 @@
       "categorie"
     ],
     "object_id": "2",
-    "object_repr": "V�tements Homme",
+    "object_repr": "Vêtements Homme",
     "action_flag": 1,
     "change_message": "[{\"added\": {}}]"
   }
@@ -459,7 +458,7 @@
       "categorie"
     ],
     "object_id": "3",
-    "object_repr": "V�tements Enfant",
+    "object_repr": "Vêtements Enfant",
     "action_flag": 1,
     "change_message": "[{\"added\": {}}]"
   }
