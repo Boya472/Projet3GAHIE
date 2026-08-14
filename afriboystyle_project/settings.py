@@ -91,7 +91,7 @@ AUTH_USER_MODEL = 'accounts.User'
 
 # Configuration des fichiers média
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Configuration Crispy Forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"

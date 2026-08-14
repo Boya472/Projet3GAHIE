@@ -39,9 +39,6 @@ MANIFEST
 staticfiles/
 collectstatic/
 
-# Fichiers médias
-/media/
-media/
 
 # Dossiers d'IDE
 .vscode/
