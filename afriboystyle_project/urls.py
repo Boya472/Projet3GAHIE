@@ -14,6 +14,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+"""
+URL configuration for afriboystyle_project project.
+"""
+
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf import settings
@@ -24,20 +28,27 @@ from django.views.static import serve
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
-   
-    
+
     # Apps URLs
     path('produits/', include('products.urls')),
     path('accounts/', include('accounts.urls')),
     path('panier/', include('cart.urls')),
     path('commandes/', include('orders.urls')),
     path('avis/', include('reviews.urls')),
-    path('pages', include('pages.urls')), 
+    path('pages', include('pages.urls')),
 ]
 
-# Servir les fichiers média en développement
-if settings.DEBUG:
-    urlpatterns.append(
-    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT})
+# Servir les fichiers média
+urlpatterns.append(
+    re_path(
+        r'^media/(?P<path>.*)$',
+        serve,
+        {'document_root': settings.MEDIA_ROOT}
+    )
 )
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# Servir les fichiers statiques
+urlpatterns += static(
+    settings.STATIC_URL,
+    document_root=settings.STATIC_ROOT
+)
