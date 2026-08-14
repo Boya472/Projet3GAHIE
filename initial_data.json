@@ -88,9 +88,9 @@
   "model": "products.categorie",
   "pk": 1,
   "fields": {
-    "nom": "Vï¿½tements Femme",
+    "nom": "Vêtements Femme",
     "slug": "vetements-femme",
-    "description": "Robe longue ï¿½lï¿½gante en vï¿½ritable tissu Wax aux motifs vibrants. Une coupe moderne qui sublime la silhouette avec une touche d'ï¿½lï¿½gance africaine authentique",
+    "description": "Robe longue élégante en véritable tissu Wax aux motifs vibrants. Une coupe moderne qui sublime la silhouette avec une touche d'élégance africaine authentique",
     "image": "categories/femc.jpg",
     "ordre": 2
   }
@@ -99,9 +99,9 @@
   "model": "products.categorie",
   "pk": 2,
   "fields": {
-    "nom": "Vï¿½tements Homme",
+    "nom": "Vêtements Homme",
     "slug": "vetements-homme",
-    "description": "Chemise tendance avec empiï¿½cements en Wax sur col et poignets. L'alliance parfaite entre ï¿½lï¿½gance professionnelle et identitï¿½ culturelle",
+    "description": "Chemise tendance avec empiècements en Wax sur col et poignets. L'alliance parfaite entre élégance professionnelle et identité culturelle",
     "image": "categories/homc.jpg",
     "ordre": 3
   }
@@ -110,9 +110,9 @@
   "model": "products.categorie",
   "pk": 3,
   "fields": {
-    "nom": "Vï¿½tements Enfant",
+    "nom": "Vêtements Enfant",
     "slug": "vetements-enfant",
-    "description": "Petite robe en coton imprimï¿½ Wax ï¿½clatant, lï¿½gï¿½re et respirante. Conï¿½ue pour offrir une totale libertï¿½ de mouvement ï¿½ vos princesses",
+    "description": "Petite robe en coton imprimé Wax éclatant, légère et respirante. Conçue pour offrir une totale liberté de mouvement à vos princesses",
     "image": "categories/catEnf.jpg",
     "ordre": 3
   }
@@ -123,7 +123,7 @@
   "fields": {
     "nom": "Chaussures",
     "slug": "chaussures",
-    "description": "andales fines en cuir vï¿½ritable tressï¿½ avec des touches de tissu traditionnel. ï¿½lï¿½gance et confort assurï¿½s pour habiller vos pieds.",
+    "description": "andales fines en cuir véritable tressé avec des touches de tissu traditionnel. Élégance et confort assurés pour habiller vos pieds.",
     "image": "categories/catchau.jpg",
     "ordre": 2
   }
@@ -134,7 +134,7 @@
   "fields": {
     "nom": "Sacs",
     "slug": "sacs",
-    "description": "Sac cabas fait main combinant cuir de qualitï¿½ et motifs Bogolan/Wax. Spacieux et robuste, c'est l'accessoire afro-chic indispensable",
+    "description": "Sac cabas fait main combinant cuir de qualité et motifs Bogolan/Wax. Spacieux et robuste, c'est l'accessoire afro-chic indispensable",
     "image": "categories/catSac.jpg",
     "ordre": 3
   }
@@ -171,9 +171,9 @@
   "pk": 1,
   "fields": {
     "vendeur": 1,
-    "nom": "Robe Sirï¿½ne",
+    "nom": "Robe Sirène",
     "slug": "robe-sirene",
-    "description": "Robe longue ajustï¿½e en vï¿½ritable tissu Wax aux motifs dorï¿½s. Une coupe sirï¿½ne ï¿½lï¿½gante qui sublime la silhouette, parfaite pour vos soirï¿½es et grands ï¿½vï¿½nements.",
+    "description": "Robe longue ajustée en véritable tissu Wax aux motifs dorés. Une coupe sirène élégante qui sublime la silhouette, parfaite pour vos soirées et grands événements.",
     "prix": "35000.00",
     "categorie": 1,
     "stock": 13,
@@ -200,7 +200,7 @@
     "vendeur": 1,
     "nom": "Ensemble Kimono & Pantalon Fluid",
     "slug": "ensemble-kimono-pantalon-fluid",
-    "description": "Ensemble chic mariant un kimono en Pagne Tissï¿½ et un pantalon fluide. Une tenue moderne et dï¿½contractï¿½e pour un look afro-contemporain affirmï¿½",
+    "description": "Ensemble chic mariant un kimono en Pagne Tissé et un pantalon fluide. Une tenue moderne et décontractée pour un look afro-contemporain affirmé",
     "prix": "150000.00",
     "categorie": 1,
     "stock": 7,
@@ -226,7 +226,7 @@
     "vendeur": 1,
     "nom": "Sac Cabas Cuir",
     "slug": "sac-cabas-cuir",
-    "description": "Sac ï¿½ main spacieux fait main combinant cuir vï¿½ritable et toile Bogolan. Rï¿½sistant et ï¿½lï¿½gant pour emporter tous vos essentiels au quotidien",
+    "description": "Sac à main spacieux fait main combinant cuir véritable et toile Bogolan. Résistant et élégant pour emporter tous vos essentiels au quotidien",
     "prix": "30000.00",
     "categorie": 5,
     "stock": 9,
@@ -249,9 +249,9 @@
   "pk": 4,
   "fields": {
     "vendeur": 1,
-    "nom": "Petite Robe ï¿½vasï¿½e",
+    "nom": "Petite Robe Évasée",
     "slug": "petite-robe-evasee",
-    "description": "Charmante petite robe en coton imprimï¿½ Wax ï¿½clatant, lï¿½gï¿½re et respirante. Offre une totale libertï¿½ de mouvement pour accompagner vos enfants au quotidien",
+    "description": "Charmante petite robe en coton imprimé Wax éclatant, légère et respirante. Offre une totale liberté de mouvement pour accompagner vos enfants au quotidien",
     "prix": "15000.00",
     "categorie": 3,
     "stock": 16,
@@ -422,7 +422,7 @@
       "categorie"
     ],
     "object_id": "1",
-    "object_repr": "Vï¿½tements Femme",
+    "object_repr": "Vêtements Femme",
     "action_flag": 1,
     "change_message": "[{\"added\": {}}]"
   }
@@ -440,7 +440,7 @@
       "categorie"
     ],
     "object_id": "2",
-    "object_repr": "Vï¿½tements Homme",
+    "object_repr": "Vêtements Homme",
     "action_flag": 1,
     "change_message": "[{\"added\": {}}]"
   }
@@ -458,7 +458,7 @@
       "categorie"
     ],
     "object_id": "3",
-    "object_repr": "Vï¿½tements Enfant",
+    "object_repr": "Vêtements Enfant",
     "action_flag": 1,
     "change_message": "[{\"added\": {}}]"
   }
