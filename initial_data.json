@@ -330,7 +330,7 @@
   "pk": 4,
   "fields": {
     "produit": 4,
-    "image": "produits/galerie/enf1.jpg",
+    "image": "produits/galerie/ENF1.jpg",
     "ordre": 0,
     "date_ajout": "2026-08-13T11:25:38.033Z"
   }
@@ -340,7 +340,7 @@
   "pk": 5,
   "fields": {
     "produit": 5,
-    "image": "produits/galerie/CHAUSS4.jpg",
+    "image": "produits/galerie/chausse2.jpg",
     "ordre": 0,
     "date_ajout": "2026-08-13T11:27:13.894Z"
   }
