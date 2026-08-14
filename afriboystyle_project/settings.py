@@ -123,19 +123,19 @@ USE_TZ = True
 
 # Stockage et compression des fichiers statiques avec WhiteNoise
 # Fichiers statiques (CSS, JavaScript, Images)
+# Fichiers statiques (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
-STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Stockage optimisé avec WhiteNoise
-STORAGES = {
-    "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
-    },
-}
+# Dossier où se trouvent tes fichiers CSS/JS sources dans le projet
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+# Dossier cible où Django rassemble TOUS les fichiers statiques pour la prod
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Configuration WhiteNoise permissive (ne plante pas si un fichier manque)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
