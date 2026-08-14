@@ -1,0 +1,83 @@
+# Environnements virtuels
+.venv/
+venv/
+env/
+ENV/
+.env
+
+# Base de données
+db.sqlite3
+*.db
+
+# Fichiers de cache Python
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / empaquetage
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Fichiers statiques collectés
+staticfiles/
+/static/
+collectstatic/
+
+# Fichiers médias
+/media/
+media/
+
+# Dossiers d'IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Dossiers spécifiques au projet
+.qodo/
+
+# Logs
+*.log
+logs/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Fichiers de test
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Fichiers temporaires
+*.tmp
+*.temp
+*.bak
+
+# IDE VSCode
+.vscode/
+*.code-workspace
+
+# MacOS
+.DS_Store
+Thumbs.db
